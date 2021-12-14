@@ -1,5 +1,7 @@
 package com.example.shabushabu;
 
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.*;
@@ -13,6 +15,7 @@ public class OrderCardView extends Div {
     H5 title = new H5("ชื่ออาหาร:");
     H6 subtitle = new H6("รายละเอียด:");
     Paragraph para = new Paragraph("ราคา:");
+    Button addOrder = new Button("เลือก");
 
 
     public OrderCardView(){
@@ -24,10 +27,9 @@ public class OrderCardView extends Div {
         this.para.addClassName("card-text");
 
         body.add(title,subtitle,para);
+        addOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.add(image);
         this.add(body);
-
-
-
+        this.add(addOrder);
     }
 }
