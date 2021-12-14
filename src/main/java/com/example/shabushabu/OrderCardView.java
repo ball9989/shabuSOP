@@ -7,7 +7,7 @@ public class OrderCardView extends VerticalLayout {
     Image image = new Image("https://dummyimage.com/600x400/000/fff", "DummyImage");
     public OrderCardView(){
         this.add(image);
-        this.add(new H1("asdasd"));
+        this.add(new H1("test"));
 
 
     }
