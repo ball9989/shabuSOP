@@ -44,7 +44,6 @@ public class OrderView extends Div {
         });
 
 
-
         this.formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("400px",3));
         this.formLayout.getStyle().set("padding", "20px");
         this.horizontalLayout.add(formLayout);
@@ -116,6 +115,7 @@ public class OrderView extends Div {
         body.add(title,subtitle,para);
         addOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addOrder.addClickListener(event -> {
+            System.out.println("hi");
             this.addOrderToCart(1+"", name, detail, price);
         });
         mainLayout.add(image);

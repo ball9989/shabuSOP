@@ -17,7 +17,6 @@ public class OrderCardView extends Div {
     Paragraph para = new Paragraph("ราคา:");
     Button addOrder = new Button("เลือก");
 
-
     public OrderCardView(){
         this.addClassName("card");
         this.image.addClassName("card-img-top");
