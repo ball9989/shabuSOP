@@ -1,7 +1,9 @@
 package com.example.shabushabu;
 
+import com.example.shabushabu.employee.AddMaterial;
 import com.example.shabushabu.employee.MaterialDetail;
 import com.example.shabushabu.employee.PaymentConfirm;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -21,6 +23,7 @@ public class MaterialView extends VerticalLayout {
     VerticalLayout leftLayout = new VerticalLayout();
     VerticalLayout rightLayout = new VerticalLayout();
     Button paymentConfirm = new Button("ยืนยัน");
+    Button addMaterial = new Button("เพิ่ม");
 
     public MaterialView() {
         for (int i=0;i<20;i++) {
@@ -35,10 +38,6 @@ public class MaterialView extends VerticalLayout {
         tableScroller.setHeight("650px");
         this.leftLayout.add(tableScroller);
 
-        //set grid ไว้ทำ รายการอาหารที่เลือกก่อนจ่ายเงิน ถ้ามีเวลา
-//        Grid<Table> tableGrid = new Grid<>(Table.class, false);
-
-
         Scroller orderList = new Scroller();
         orderList.setHeight("200px");
         orderList.addClassName("border");
@@ -48,11 +47,18 @@ public class MaterialView extends VerticalLayout {
 
         //right layout
         FormLayout buttonLayout = new FormLayout(this.paymentConfirm);
-        rightLayout.add(new MaterialDetail());
-        rightLayout.addClassName("pt-5");
+        Component material = new MaterialDetail();
+        rightLayout.add(material);
 
+        rightLayout.addClassName("pt-5");
         mainLayout.add(leftLayout, rightLayout);
-        this.add(mainLayout);
+        addMaterial.addClassName("d-flex");
+        this.add(addMaterial, mainLayout);
+
+        addMaterial.addClickListener(event -> {
+            rightLayout.remove(material);
+            rightLayout.add(new AddMaterial());
+        });
     }
 
     public Div createMaterialCard() {
