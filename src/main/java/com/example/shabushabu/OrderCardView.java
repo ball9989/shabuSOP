@@ -21,6 +21,7 @@ public class OrderCardView extends Div {
     public OrderCardView(){
         this.addClassName("card");
         this.image.addClassName("card-img-top");
+        this.image.setHeight("200px");
         this.body.addClassName("card-body");
         this.title.addClassName("card-title");
         this.subtitle.addClassName("card-subtitle");
