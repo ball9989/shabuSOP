@@ -1,6 +1,6 @@
 package com.example.shabushabu;
 
-import com.example.shabushabu.pojo.Menus;
+import com.example.shabushabu.pojo.Orders;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -9,6 +9,9 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -18,7 +21,7 @@ public class OrderView extends Div {
     private HorizontalLayout horizontalLayout = new HorizontalLayout();
     private FormLayout formLayout = new FormLayout();
     private int numberArr = 0;
-    private Menus orders;
+    private Orders orders;
     VerticalLayout rightLayout = new VerticalLayout();
     public OrderView(){
 
@@ -81,10 +84,10 @@ public class OrderView extends Div {
         this.add(newLayout);
     }
     public void getOrders(){
-        Menus out = WebClient.create().get()
+        Orders out = WebClient.create().get()
                 .uri("http://localhost:8080/orders")
                 .retrieve()
-                .bodyToMono(Menus.class)
+                .bodyToMono(Orders.class)
                 .block();
         orders = out;
     }
