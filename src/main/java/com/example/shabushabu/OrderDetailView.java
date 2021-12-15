@@ -19,7 +19,11 @@ public class OrderDetailView extends FormLayout {
     Paragraph para = new Paragraph("ราคา:");
     Integer count = 1;
 
-    public OrderDetailView() {
+    public OrderDetailView(String name, String detail, String price) {
+        this.title.setText("ชื่ออาหาร: "+name);
+        this.subtitle.setText("รายละเอียด: "+detail);
+        this.para.setText("ราคา: "+price);
+
         VerticalLayout layout = new VerticalLayout();
         Button plus = new Button(new Icon(VaadinIcon.PLUS_CIRCLE));
         Button minus = new Button(new Icon(VaadinIcon.MINUS_CIRCLE));

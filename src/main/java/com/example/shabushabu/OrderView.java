@@ -5,9 +5,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,6 +22,7 @@ public class OrderView extends Div {
     private FormLayout formLayout = new FormLayout();
     private int numberArr = 0;
     private Orders orders;
+    VerticalLayout rightLayout = new VerticalLayout();
     public OrderView(){
 
         H1 title = new H1("Order Menu โต๊ะ 1");
@@ -40,7 +39,7 @@ public class OrderView extends Div {
                 orderCardView.image.setSrc(orders.model.get(i).getImage());
                 orderCardView.para.setText(orders.model.get(i).getPrice()+"");
                 orderCardView.addClassName("mb-5");
-                this.formLayout.add(orderCardView);
+                this.formLayout.add(getOrderCardView(orders.model.get(i).get_id(), orders.model.get(i).getName(), orders.model.get(i).getDetail(), orders.model.get(i).getImage(), orders.model.get(i).getPrice()+""));
             }
         });
 
@@ -51,7 +50,7 @@ public class OrderView extends Div {
         this.horizontalLayout.add(formLayout);
 
         //ด้านขวา
-        VerticalLayout rightLayout = new VerticalLayout();
+
         FormLayout headerOrder = new FormLayout();
         Label headerLabel = new Label("สั่งอาหาร");
         headerLabel.addClassName("h3");
@@ -61,7 +60,6 @@ public class OrderView extends Div {
 
 
 
-    //rightLayout.add(new OrderDetailView())
 
         HorizontalLayout newLayout = new HorizontalLayout();
         Scroller scrollerLeft = new Scroller(horizontalLayout);
@@ -92,5 +90,38 @@ public class OrderView extends Div {
                 .bodyToMono(Orders.class)
                 .block();
         orders = out;
+    }
+
+    public void addOrderToCart(String id, String name, String detail, String price) {
+        this.rightLayout.add(new OrderDetailView(name, detail, price));
+    }
+
+    public Div getOrderCardView(String id, String name, String detail, String imageUri, String price) {
+        Image image = new Image(imageUri, name);
+        Div body = new Div();
+        H5 title = new H5(name);
+        H6 subtitle = new H6(detail);
+        Paragraph para = new Paragraph(price);
+        Button addOrder = new Button("เลือก");
+
+        Div mainLayout = new Div();
+        mainLayout.addClassName("card");
+        image.addClassName("card-img-top");
+        image.setHeight("200px");
+        body.addClassName("card-body");
+        title.addClassName("card-title");
+        subtitle.addClassName("card-subtitle");
+        para.addClassName("card-text");
+
+        body.add(title,subtitle,para);
+        addOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addOrder.addClickListener(event -> {
+            this.addOrderToCart(1+"", name, detail, price);
+        });
+        mainLayout.add(image);
+        mainLayout.add(body);
+        mainLayout.add(addOrder);
+
+        return mainLayout;
     }
 }
