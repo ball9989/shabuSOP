@@ -1,6 +1,6 @@
 package com.example.shabushabu.repository;
 
-import com.example.shabushabu.pojo.Order;
+import com.example.shabushabu.pojo.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,5 +12,5 @@ public class OrderService {
     private OrderRepository repository;
     public OrderService(OrderRepository repository){this.repository = repository;}
 
-    public List<Order> getOrder(){return repository.findAll();}
+    public List<Menu> getOrder(){return repository.findAll();}
 }

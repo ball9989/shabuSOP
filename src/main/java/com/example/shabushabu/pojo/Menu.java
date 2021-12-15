@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 
 @Data
-@Document("Order")
-public class Order implements Serializable {
+@Document("menu")
+public class Menu implements Serializable {
     @Id
     private String _id;
     private String name;
@@ -16,9 +16,9 @@ public class Order implements Serializable {
     private String detail;
     private int price;
 
-    public Order (){}
+    public Menu(){}
 
-    public Order (String _id, String name, String image, String detail, int price){
+    public Menu(String _id, String name, String image, String detail, int price){
         this._id = _id;
         this.name = name;
         this.image = image;
