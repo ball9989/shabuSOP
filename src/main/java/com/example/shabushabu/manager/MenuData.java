@@ -16,5 +16,6 @@ public class MenuData extends VerticalLayout {
 //        grid.addColumn(orders -> orders.model.get(0).getName()).setHeader("ชื่อเมนู");
         add(title);
         setWidth("100%");
+        setVisible(false);
     }
 }
