@@ -1,6 +1,7 @@
-package com.example.shabushabu;
+package com.example.shabushabu.managerView;
 
 
+import com.example.shabushabu.Person;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.StyleSheet;
