@@ -24,12 +24,10 @@ public class ManagerView extends HorizontalLayout {
     private List<Component> components;
     private EmpData employee = new EmpData();
     private MenuData menu = new MenuData();
-    private Test test = new Test();
 
     public ManagerView(){
         components = new ArrayList<Component>();
         components.add(employee);
-        components.add(test);
         components.add(menu);
         employeeBn = new Button("พนักงาน", new Icon(VaadinIcon.USER));
         orders = new Button("ออร์เดอร์",new Icon(VaadinIcon.CART));
@@ -39,20 +37,21 @@ public class ManagerView extends HorizontalLayout {
         employeeBn.setWidth("100%");
         supplies.setWidth("100%");
         orders.setWidth("100%");
-        drawer.add(employeeBn,orders,supplies);
+        food.setWidth("100%");
+        drawer.add(employeeBn,orders,supplies,food);
         drawer.setWidth("20%");
         drawer.setHeight("960px");
         drawer.addClassName("border");
         data = new VerticalLayout();
-        for (int i=0;i<=components.size()-1;i++){
+        for (int i=0;i<components.size();i++){
             data.add(components.get(i));
         }
         add(drawer,data);
         employeeBn.addClickListener(e->{getInfo(employee);});
-        orders.addClickListener(e->{getInfo(test);});
+        food.addClickListener(e->{getInfo(menu);});
     }
     public void getInfo(Component c){
-        for (int i=0;i<=components.size()-1;i++){
+        for (int i=0;i<components.size();i++){
             components.get(i).setVisible(false);
         }
         c.setVisible(true);

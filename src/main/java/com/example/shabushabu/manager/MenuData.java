@@ -12,9 +12,9 @@ public class MenuData extends VerticalLayout {
     private Orders orders;
     public MenuData(){
         H2 title = new H2("เมนูที่มีในร้าน");
-        Grid<Orders> grid = new Grid<>();
-        grid.addColumn(orders -> orders.model.get(0).getName()).setHeader("ชื่อเมนู");
-        add(title,grid);
+//        Grid<Orders> grid = new Grid<>();
+//        grid.addColumn(orders -> orders.model.get(0).getName()).setHeader("ชื่อเมนู");
+        add(title);
         setWidth("100%");
     }
 }
