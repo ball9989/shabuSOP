@@ -13,6 +13,10 @@ import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
@@ -79,6 +83,27 @@ public class OrderView extends Div {
         newLayout.addClassName("pl-5");
 
         this.add(newLayout);
+
+        confirmOrder.addClickListener(event -> {
+            MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+            formData.add("size", cart.size()+"");
+            for (int i=0;i< cart.size();i++) {
+//                MultiValueMap<String, String> formDataSub = new LinkedMultiValueMap<>();
+                formData.add(i+"_id", cart.get(i).getId()+"");
+                formData.add(i+"_name", cart.get(i).name);
+                formData.add(i+"_count", cart.get(i).count+"");
+//                formData.add(i+"", formDataSub+"");
+            }
+            boolean out = WebClient.create()
+                    .post()
+                    .uri("http://localhost:8080/sendOrder")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(boolean.class)
+                    .block();
+            System.out.println("test " +out);
+        });
     }
     public void getOrders(){
         Orders out = WebClient.create().get()

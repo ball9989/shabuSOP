@@ -28,6 +28,8 @@ import java.awt.*;
 @StyleSheet("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
 @Route(value = "manager")
 public class ManagerView extends HorizontalLayout {
+
+
     private VerticalLayout drawer,data;
     private Button user,supplies,orders;
 
