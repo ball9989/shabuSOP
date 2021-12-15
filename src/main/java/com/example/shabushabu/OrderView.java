@@ -23,9 +23,11 @@ public class OrderView extends Div {
     private HorizontalLayout horizontalLayout = new HorizontalLayout();
     private FormLayout formLayout = new FormLayout();
     private int numberArr = 0;
+    private int total = 0;
     private Orders orders;
     private ArrayList<OrderDetailView> cart = new ArrayList<>();
     VerticalLayout rightLayout = new VerticalLayout();
+    Button confirmOrder = new Button("ยืนยัน ราคารวมทั้งหมด 0 บาท");
     public OrderView(){
 
         H1 title = new H1("Order Menu โต๊ะ 1");
@@ -64,12 +66,11 @@ public class OrderView extends Div {
         scrollerRight.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
         scrollerLeft.setHeight("650px");
 
-        Button confirmOrder = new Button("ยืนยัน ราคารวมทั้งหมด 500 บาท");
+
         confirmOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
         confirmOrder.addClassName("d-flex");
         confirmOrder.addClassName("justify-content-center");
-        confirmOrder.addClassName("ml-5");
-        confirmOrder.setWidth("300px");
+        confirmOrder.setWidth("100%");
         VerticalLayout groupRight = new VerticalLayout(scrollerRight, confirmOrder);
         groupRight.setHeight("650px");
         groupRight.setWidth("100%");
@@ -90,6 +91,35 @@ public class OrderView extends Div {
 
     public void addOrderToCart(String id, String name, String detail, String price) {
         OrderDetailView cartItem = new OrderDetailView(id,name,detail,price);
+        cartItem.plus.addClickListener(e->{
+            cartItem.count++;
+            cartItem.number.setText(cartItem.count+"");
+            this.total = 0;
+            for (int i = 0; i < cart.size(); i++) {
+                total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+            }
+            this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
+        });
+        cartItem.minus.addClickListener(e->{
+            if (cartItem.count > 1) {
+                cartItem.count--;
+                cartItem.number.setText(cartItem.count+"");
+                this.total = 0;
+                for (int i = 0; i < cart.size(); i++) {
+                    total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+                }
+                this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
+            }
+        });
+        cartItem.delMenu.addClickListener(e->{
+           this.cart.remove(cartItem);
+           this.rightLayout.remove(cartItem);
+            this.total = 0;
+            for (int i = 0; i < cart.size(); i++) {
+                total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+            }
+            this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
+        });
         for (int i = 0; i < cart.size(); i++) {
             if(cart.get(i).getId().equals(cartItem.getId())==true){
                 return;
@@ -124,7 +154,11 @@ public class OrderView extends Div {
         addOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addOrder.addClickListener(event -> {
             this.addOrderToCart(id,name,detail,price);
-            ;
+            this.total = 0;
+            for (int i = 0; i < cart.size(); i++) {
+                total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+            }
+            this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
         });
         mainLayout.add(image);
         mainLayout.add(body);
