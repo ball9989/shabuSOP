@@ -108,7 +108,9 @@ public class ServeView extends VerticalLayout {
         mainLayout.addClassName("mb-3");
 
         selectTable.addClickListener(event -> {
+//            this.serveConfirm.setServeConfirm();
             this.serveConfirm.setServeConfirm(tableNo, status, totalPrice, ordersServe);
+//            this.serveConfirm.setServeConfirm(tableNo, status, totalPrice, ordersServe);
         });
 
         return mainLayout;

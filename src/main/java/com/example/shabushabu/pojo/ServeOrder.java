@@ -16,12 +16,7 @@ public class ServeOrder implements Serializable {
         this.count = count;
         this.price = price;
     }
-    public Double getTotalPrice() {
-        return this.price * this.count;
-    }
-    public Double getPrice() {
-        return price;
-    }
+
 
     public void setPrice(Double price) {
         this.price = price;
@@ -49,5 +44,12 @@ public class ServeOrder implements Serializable {
 
     public Integer getCount() {
         return count;
+    }
+
+    public Double getTotalPrice() {
+        return this.price * this.count;
+    }
+    public Double getPrice() {
+        return price;
     }
 }

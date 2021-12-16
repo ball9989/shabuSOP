@@ -17,6 +17,7 @@ public class ServeConfirm extends FormLayout {
     H5 totalPrice = new H5("ราคารวมทั้งหมด : ");
     Button paymentConfirm = new Button("ยืนยัน");
     Grid<ServeOrder> grid = new Grid<>(ServeOrder.class, false);
+    public ServeConfirm() {}
 
     public ServeConfirm(ArrayList<ServeOrder> arrayList) {
 
@@ -24,7 +25,6 @@ public class ServeConfirm extends FormLayout {
         grid.addColumn(ServeOrder::getCount).setHeader("จำนวน");
         grid.addColumn(ServeOrder::getPrice).setHeader("ราคา");
         grid.addColumn(ServeOrder::getTotalPrice).setHeader("รวมเป็น");
-//        grid.setItems(arrayList);
 
         buttonLayout.add(paymentConfirm);
         mainLayout.add(tableNumber, status, totalPrice, grid, buttonLayout);
