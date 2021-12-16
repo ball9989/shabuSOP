@@ -94,21 +94,24 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         confirmOrder.addClickListener(event -> {
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("size", cart.size()+"");
-            formData.add("tableNo", "a1");
+            formData.add("tableNo", "1");
+            formData.add("totalPrice", total+"");
+            formData.add("status", "waiting");
             for (int i=0;i< cart.size();i++) {
 //                MultiValueMap<String, String> formDataSub = new LinkedMultiValueMap<>();
                 formData.add(i+"_id", cart.get(i).getId()+"");
                 formData.add(i+"_name", cart.get(i).name);
                 formData.add(i+"_count", cart.get(i).count+"");
+                formData.add(i+"_price", cart.get(i).price+"");
 //                formData.add(i+"", formDataSub+"");
             }
-            boolean out = WebClient.create()
+            Boolean out = WebClient.create()
                     .post()
                     .uri("http://localhost:8080/sendOrder")
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .body(BodyInserters.fromFormData(formData))
                     .retrieve()
-                    .bodyToMono(boolean.class)
+                    .bodyToMono(Boolean.class)
                     .block();
             System.out.println("test " +out);
         });
