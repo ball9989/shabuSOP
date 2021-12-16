@@ -1,15 +1,11 @@
 package com.example.shabushabu;
 
-import com.example.shabushabu.employee.PaymentConfirm;
-import com.example.shabushabu.employee.ServeConfirm;
-import com.example.shabushabu.pojo.Menus;
 import com.example.shabushabu.pojo.Orders;
 import com.example.shabushabu.pojo.ServeOrder;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H5;
@@ -18,6 +14,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
@@ -39,21 +39,24 @@ public class ServeView extends VerticalLayout {
     H5 tableNumber = new H5("โต๊ะ : ");
     H5 status = new H5("สถานะ : ");
     H5 totalPrice = new H5("ราคารวมทั้งหมด : ");
-    Button paymentConfirm = new Button("ยืนยัน");
+    Button confirmBtn = new Button("ยืนยัน");
+    String selectId = "";
 
     ServeConfirm serveConfirm = new ServeConfirm(firstList);
 
-    public ServeView(){
 
+
+    public ServeView(){
         //reload
         addAttachListener(event -> {
             this.getOrders();
             for (int i = 0; i < orders.model.size(); i++) {
-                System.out.println(orders.model.get(i).getOrders());
-                Div tableCard = createTableCard(orders.model.get(i).getTableNo(), orders.model.get(i).getStatus(), orders.model.get(i).getTotalPrice(), orders.model.get(i).getOrders());
-                tableCard.addClassName("border");
-                tableCard.setWidth("500px");
-                this.tableLayout.add(tableCard);
+                if (orders.model.get(i).getStatus().equals("waiting")) {
+                    Div tableCard = createTableCard(orders.model.get(i).get_id() ,orders.model.get(i).getTableNo(), orders.model.get(i).getStatus(), orders.model.get(i).getTotalPrice(), orders.model.get(i).getOrders());
+                    tableCard.addClassName("border");
+                    tableCard.setWidth("500px");
+                    this.tableLayout.add(tableCard);
+                }
             }
         });
         this.tableLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("1px", 3));
@@ -75,20 +78,47 @@ public class ServeView extends VerticalLayout {
 
         //right layout
         rightLayout.setWidth("30%");
-        FormLayout buttonLayout = new FormLayout(this.paymentConfirm);
         rightLayout.add(serveConfirm);
         rightLayout.addClassName("pt-5");
 
         mainLayout.add(leftLayout, rightLayout);
         mainLayout.setWidth("100%");
+
+        //confirm
+        this.serveConfirm.confirmBtn.addClickListener(event -> {
+            System.out.println("test click");
+            MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+            formData.add("_id", selectId);
+            Boolean out = WebClient.create().post().uri("http://localhost:8080/orders/confirm")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+            tableLayout.removeAll();
+
+            this.getOrders();
+            for (int i = 0; i < orders.model.size(); i++) {
+                if (orders.model.get(i).getStatus().equals("waiting")) {
+                    Div tableCard = createTableCard(orders.model.get(i).get_id() ,orders.model.get(i).getTableNo(), orders.model.get(i).getStatus(), orders.model.get(i).getTotalPrice(), orders.model.get(i).getOrders());
+                    tableCard.addClassName("border");
+                    tableCard.setWidth("500px");
+                    this.tableLayout.add(tableCard);
+                }
+            }
+            this.selectId = "";
+            this.serveConfirm.clearStage();
+//            this.serveConfirm = new ServeConfirm(firstList);
+//            rightLayout.removeAll();
+//            rightLayout.add(serveConfirm);
+
+        });
+
+
         this.add(mainLayout);
-
-
-
-
     }
 
-    public Div createTableCard(Integer tableNo, String status, Double totalPrice, ArrayList<ServeOrder> ordersServe) {
+    public Div createTableCard(String _id, Integer tableNo, String status, Double totalPrice, ArrayList<ServeOrder> ordersServe) {
         Div mainLayout = new Div();
         H5 tableNumber = new H5("โต๊ะ : "+tableNo);
         Paragraph statusP = new Paragraph("สถานะ : "+status);
@@ -108,7 +138,9 @@ public class ServeView extends VerticalLayout {
         mainLayout.addClassName("mb-3");
 
         selectTable.addClickListener(event -> {
-            this.serveConfirm.setServeConfirm(tableNo, status, totalPrice, ordersServe);
+            this.selectId = _id;
+//            System.out.println(_id);
+            this.serveConfirm.setServeConfirm(_id,tableNo, status, totalPrice, ordersServe);
         });
 
         return mainLayout;

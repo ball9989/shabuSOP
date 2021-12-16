@@ -16,6 +16,16 @@ public class OrderService {
         this.respository = repository;
     }
 
+    public void confirmOrder(String _id) {
+        List<Order> orders = respository.findAll();
+        for (int i=0;i<orders.size();i++) {
+            if (orders.get(i).get_id().equals(_id)) {
+                orders.get(i).setStatus("pending");
+                System.out.println(orders.get(i).getStatus());
+                respository.save(orders.get(i));
+            }
+        }
+    }
 
     @RabbitListener(queues = "AddOrderQueue")
     public void addOrderQueue(Order order) {
