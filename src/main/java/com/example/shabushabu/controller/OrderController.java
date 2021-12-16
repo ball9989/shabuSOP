@@ -23,6 +23,5 @@ public class OrderController {
         ArrayList<Order> o = (ArrayList<Order>) orderService.getOrder();
         orders.model = o;
         return ResponseEntity.ok(orders);
-
     }
 }
