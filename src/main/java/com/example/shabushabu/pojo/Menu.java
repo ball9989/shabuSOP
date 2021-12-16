@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 
 @Data
-@Document("Order")
+@Document("Menu")
 
 public class Menu implements Serializable {
     @Id
