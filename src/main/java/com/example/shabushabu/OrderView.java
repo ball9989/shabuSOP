@@ -9,6 +9,8 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,18 +22,26 @@ import java.util.ArrayList;
 
 @Route(value = "order")
 @StyleSheet("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-public class OrderView extends Div {
+public class OrderView extends Div implements HasUrlParameter<String>  {
     private HorizontalLayout horizontalLayout = new HorizontalLayout();
     private FormLayout formLayout = new FormLayout();
     private int numberArr = 0;
     private int total = 0;
     private Menus menus;
+    private String table;
     private ArrayList<OrderDetailView> cart = new ArrayList<>();
     VerticalLayout rightLayout = new VerticalLayout();
     Button confirmOrder = new Button("ยืนยัน ราคารวมทั้งหมด 0 บาท");
-    public OrderView(){
+    H1 title = new H1("Order Menu Table 1");
 
-        H1 title = new H1("Order Menu โต๊ะ 1");
+    @Override
+    public void setParameter(BeforeEvent event, String parameter) {
+        this.table = parameter;
+        this.title.setText("Order Menu Table: "+table);
+    }
+    
+
+    public OrderView(){
         title.addClassName("h1");
         this.add(title);
 
