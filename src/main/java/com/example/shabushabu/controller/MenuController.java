@@ -1,8 +1,9 @@
 package com.example.shabushabu.controller;
 
+import com.example.shabushabu.pojo.Menu;
+import com.example.shabushabu.pojo.Menus;
 import com.example.shabushabu.pojo.Order;
 import com.example.shabushabu.pojo.Orders;
-import com.example.shabushabu.repository.OrderService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 @RestController
-public class OrderController {
+public class MenuController {
     @Autowired
-    private OrderService orderService;
+    private RabbitTemplate rabbitTemplate;
+    protected Menus menu = new Menus();
 
-    protected Orders orders = new Orders();
+    @RequestMapping(value = "/menu",method = RequestMethod.GET)
+    public ResponseEntity<?> getMenu(){
+        Object obj = rabbitTemplate.convertSendAndReceive("Direct","test","get Menu Data");
+        ArrayList<Menu> menulist = (ArrayList<Menu>) obj;
+        menu.model = menulist;
 
-    @RequestMapping(value = "/orders",method = RequestMethod.GET)
-    public ResponseEntity<?> getOrders(){
-        ArrayList<Order> o = (ArrayList<Order>) orderService.getOrder();
-        orders.model = o;
-        return ResponseEntity.ok(orders);
-
-    }
-
-
+        return ResponseEntity.ok(menu);
+    };
 }

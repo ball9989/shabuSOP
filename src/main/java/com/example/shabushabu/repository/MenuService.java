@@ -1,7 +1,7 @@
 package com.example.shabushabu.repository;
 
 
-import com.example.shabushabu.pojo.Order;
+import com.example.shabushabu.pojo.Menu;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +11,13 @@ import java.util.List;
 @Service
 public class MenuService {
     @Autowired
-    private OrderRepository repository;
-    public MenuService(OrderRepository repository){
+    private MenuRespository repository;
+    public MenuService(MenuRespository repository){
         this.repository = repository;
     }
 
     @RabbitListener(queues = "AddProductQueue")
-    public List<Order> getMenu() {
+    public List<Menu> getMenu() {
         return repository.findAll();
     }
 
