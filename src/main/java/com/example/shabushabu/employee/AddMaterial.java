@@ -35,7 +35,7 @@ public class AddMaterial extends FormLayout {
         cancelBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
         buttonLayout.add(cancelBtn, confirmBtn);
         buttonLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("1px", 2));
-        mainLayout.add(materialName, materialDetail, materialNumber, addMaterialNumber,addMaterialLayout, buttonLayout);
+//        mainLayout.add(materialName, materialDetail, materialNumber, addMaterialNumber,addMaterialLayout, buttonLayout);
 
         this.add(mainLayout);
     }

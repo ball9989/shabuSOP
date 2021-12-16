@@ -3,6 +3,7 @@ package com.example.shabushabu.controller;
 import com.example.shabushabu.pojo.Order;
 import com.example.shabushabu.pojo.Orders;
 import com.example.shabushabu.repository.OrderService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     protected Orders orders = new Orders();
 
     @RequestMapping(value = "/orders",method = RequestMethod.GET)
@@ -25,4 +29,12 @@ public class OrderController {
         return ResponseEntity.ok(orders);
 
     }
+
+    @RequestMapping(value = "/menu",method = RequestMethod.GET)
+    public ResponseEntity<?> getMenu(){
+        Object o = rabbitTemplate.convertSendAndReceive("Direct","test","get Menu Data");
+        ArrayList<Order> menu = (ArrayList<Order>) o;
+        return ResponseEntity.ok(menu);
+    };
+
 }
