@@ -10,14 +10,14 @@
     "totalPrice": 800
   },
   {
-    "tableNo": 5,
+    "tableNo": 3,
     "order": [{ "count": 5, "name": "หมูสามชั้น", "price": 40 }],
     "orderTime": { "$date": "2021-12-15T18:49:51.141Z" },
     "status": "waiting",
     "totalPrice": 200
   },
   {
-    "tableNo": 5,
+    "tableNo": 3,
     "order": [{ "count": 5, "name": "หมูสามชั้น", "price": 40 }],
     "orderTime": { "$date": "2021-12-15T18:49:51.141Z" },
     "status": "pending",
