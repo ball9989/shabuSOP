@@ -13,7 +13,13 @@ import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.ArrayList;
 
 @Route(value = "order")
 @StyleSheet("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
@@ -21,8 +27,11 @@ public class OrderView extends Div {
     private HorizontalLayout horizontalLayout = new HorizontalLayout();
     private FormLayout formLayout = new FormLayout();
     private int numberArr = 0;
+    private int total = 0;
     private Orders orders;
+    private ArrayList<OrderDetailView> cart = new ArrayList<>();
     VerticalLayout rightLayout = new VerticalLayout();
+    Button confirmOrder = new Button("ยืนยัน ราคารวมทั้งหมด 0 บาท");
     public OrderView(){
 
         H1 title = new H1("Order Menu โต๊ะ 1");
@@ -32,16 +41,10 @@ public class OrderView extends Div {
         addAttachListener(event -> {
             getOrders();
             for (int i = 0; i < orders.model.size(); i++) {
-                OrderCardView orderCardView = new OrderCardView();
-                orderCardView.setId(orders.model.get(i).get_id());
-                orderCardView.title.setText(orders.model.get(i).getName());
-                orderCardView.subtitle.setText(orders.model.get(i).getDetail());
-                orderCardView.image.setSrc(orders.model.get(i).getImage());
-                orderCardView.para.setText(orders.model.get(i).getPrice()+"");
-                orderCardView.addClassName("mb-5");
                 this.formLayout.add(getOrderCardView(orders.model.get(i).get_id(), orders.model.get(i).getName(), orders.model.get(i).getDetail(), orders.model.get(i).getImage(), orders.model.get(i).getPrice()+""));
             }
         });
+
 
 
         this.formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("400px",3));
@@ -67,12 +70,11 @@ public class OrderView extends Div {
         scrollerRight.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
         scrollerLeft.setHeight("650px");
 
-        Button confirmOrder = new Button("ยืนยัน ราคารวมทั้งหมด 500 บาท");
+
         confirmOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
         confirmOrder.addClassName("d-flex");
         confirmOrder.addClassName("justify-content-center");
-        confirmOrder.addClassName("ml-5");
-        confirmOrder.setWidth("300px");
+        confirmOrder.setWidth("100%");
         VerticalLayout groupRight = new VerticalLayout(scrollerRight, confirmOrder);
         groupRight.setHeight("650px");
         groupRight.setWidth("100%");
@@ -81,6 +83,27 @@ public class OrderView extends Div {
         newLayout.addClassName("pl-5");
 
         this.add(newLayout);
+
+        confirmOrder.addClickListener(event -> {
+            MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+            formData.add("size", cart.size()+"");
+            for (int i=0;i< cart.size();i++) {
+//                MultiValueMap<String, String> formDataSub = new LinkedMultiValueMap<>();
+                formData.add(i+"_id", cart.get(i).getId()+"");
+                formData.add(i+"_name", cart.get(i).name);
+                formData.add(i+"_count", cart.get(i).count+"");
+//                formData.add(i+"", formDataSub+"");
+            }
+            boolean out = WebClient.create()
+                    .post()
+                    .uri("http://localhost:8080/sendOrder")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(boolean.class)
+                    .block();
+            System.out.println("test " +out);
+        });
     }
     public void getOrders(){
         Orders out = WebClient.create().get()
@@ -92,7 +115,47 @@ public class OrderView extends Div {
     }
 
     public void addOrderToCart(String id, String name, String detail, String price) {
-        this.rightLayout.add(new OrderDetailView(name, detail, price));
+        OrderDetailView cartItem = new OrderDetailView(id,name,detail,price);
+        cartItem.plus.addClickListener(e->{
+            cartItem.count++;
+            cartItem.number.setText(cartItem.count+"");
+            this.total = 0;
+            for (int i = 0; i < cart.size(); i++) {
+                total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+            }
+            this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
+        });
+        cartItem.minus.addClickListener(e->{
+            if (cartItem.count > 1) {
+                cartItem.count--;
+                cartItem.number.setText(cartItem.count+"");
+                this.total = 0;
+                for (int i = 0; i < cart.size(); i++) {
+                    total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+                }
+                this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
+            }
+        });
+        cartItem.delMenu.addClickListener(e->{
+           this.cart.remove(cartItem);
+           this.rightLayout.remove(cartItem);
+            this.total = 0;
+            for (int i = 0; i < cart.size(); i++) {
+                total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+            }
+            this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
+        });
+        for (int i = 0; i < cart.size(); i++) {
+            if(cart.get(i).getId().equals(cartItem.getId())==true){
+                return;
+            }
+        }
+        this.cart.add(cartItem);
+
+
+        for (int c = 0; c < cart.size(); c++) {
+            this.rightLayout.add(cart.get(c));
+        }
     }
 
     public Div getOrderCardView(String id, String name, String detail, String imageUri, String price) {
@@ -115,8 +178,12 @@ public class OrderView extends Div {
         body.add(title,subtitle,para);
         addOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addOrder.addClickListener(event -> {
-            System.out.println("hi");
-            this.addOrderToCart(1+"", name, detail, price);
+            this.addOrderToCart(id,name,detail,price);
+            this.total = 0;
+            for (int i = 0; i < cart.size(); i++) {
+                total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+            }
+            this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
         });
         mainLayout.add(image);
         mainLayout.add(body);

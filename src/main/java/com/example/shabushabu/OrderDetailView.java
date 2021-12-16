@@ -18,37 +18,33 @@ public class OrderDetailView extends FormLayout {
     H6 subtitle = new H6("รายละเอียด:");
     Paragraph para = new Paragraph("ราคา:");
     Integer count = 1;
+    Button delMenu = new Button("ลบ");
+    String price;
+    Button plus = new Button(new Icon(VaadinIcon.PLUS_CIRCLE));
+    Button minus = new Button(new Icon(VaadinIcon.MINUS_CIRCLE));
+    Label number = new Label(count+"");
 
-    public OrderDetailView() {}
+    String name;
 
-    public OrderDetailView(String name, String detail, String price) {
+    public OrderDetailView(){}
+
+    public OrderDetailView(String id,String name, String detail, String price) {
+        this.setId(id);
+        this.name = name;
         this.title.setText("ชื่ออาหาร: "+name);
         this.subtitle.setText("รายละเอียด: "+detail);
         this.para.setText("ราคา: "+price);
+        this.price = price;
 
         VerticalLayout layout = new VerticalLayout();
-        Button plus = new Button(new Icon(VaadinIcon.PLUS_CIRCLE));
-        Button minus = new Button(new Icon(VaadinIcon.MINUS_CIRCLE));
-        Label number = new Label(count+"");
         number.addClassName("h5");
         HorizontalLayout horiLayout = new HorizontalLayout();
         horiLayout.addClassName("d-flex");
         horiLayout.addClassName("align-items-center");
         horiLayout.add(minus, number,plus);
-        Button delMenu = new Button("ลบ");
         delMenu.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
         layout.add(title, subtitle, para, horiLayout);
 
-        plus.addClickListener(event -> {
-           this.count++;
-           number.setText(count+"");
-        });
-        minus.addClickListener(event -> {
-            if (this.count > 1) {
-                this.count--;
-                number.setText(count+"");
-            }
-        });
 
         this.add(layout,delMenu);
         this.addClassName("mb-3");

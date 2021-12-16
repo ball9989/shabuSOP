@@ -24,6 +24,5 @@ public class Order implements Serializable {
         this.image = image;
         this.detail = detail;
         this.price = price;
-
     }
 }
