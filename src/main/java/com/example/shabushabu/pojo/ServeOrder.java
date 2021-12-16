@@ -6,13 +6,25 @@ import java.io.Serializable;
 public class ServeOrder implements Serializable {
     private String _id;
     private String name;
-    private Double count;
+    private Integer count;
+    private Double price;
 
     public ServeOrder() {}
-    public ServeOrder(String id, String name, Double count) {
+    public ServeOrder(String id, String name, Integer count, Double price) {
         this._id = id;
         this.name = name;
         this.count = count;
+        this.price = price;
+    }
+    public Double getTotalPrice() {
+        return this.price * this.count;
+    }
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String get_id() {
@@ -27,7 +39,7 @@ public class ServeOrder implements Serializable {
         this.name = name;
     }
 
-    public void setCount(Double count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
@@ -35,7 +47,7 @@ public class ServeOrder implements Serializable {
         return name;
     }
 
-    public Double getCount() {
+    public Integer getCount() {
         return count;
     }
 }
