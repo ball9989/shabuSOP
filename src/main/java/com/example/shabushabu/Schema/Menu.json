@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Becon",
+    "mats_left": 100,
+    "mats_cost": 10,
+    "image": "https://foodsguy.com/wp-content/uploads/2020/08/Can-You-Freeze-Uncooked-Bacon.jpg",
+    "price": 20.0,
+    "detail": "เบค่อนนุ่มละมุนลิ้น"
+  },
+  {
+    "name": "เนื้อสันคอ",
+    "mats_left": 100,
+    "mats_cost": 40,
+    "image": "https://img.wongnai.com/p/1920x0/2019/05/06/23ac401d7bb54cd2a6015d5615c14289.jpg",
+    "price": 80.0,
+    "detail": "เนื้อวัวนำเข้าจากออสเตรเลีย"
+  },
+  {
+    "name": "หมูสามชั้น",
+    "mats_left": 100,
+    "mats_cost": 20,
+    "image": "https://f.ptcdn.info/379/049/000/olo4nbziuotStJAF89A-o.jpg",
+    "price": 40.0,
+    "detail": "เนื้อสามชั้นละลายในปาก"
+  },
+  {
+    "name": "เนื้อลาย",
+    "mats_left": 100,
+    "mats_cost": 60,
+    "image": "http://s2.liekr.com/thimgs/201906/25/5/15614548096310.jpg",
+    "price": 120.0,
+    "detail": "เนิ้อวัวมีมันแทรก นุ่มอร่อยละลายในปาก หวานติดคอหอมติดลิ้น"
+  }
+]

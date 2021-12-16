@@ -1,0 +1,37 @@
+[
+    {
+        "username": "admin",
+        "password": "admin",
+        "role": "manager",
+        "tableNo": 0,
+        "token": ""
+    },
+    {
+        "username": "employee1",
+        "password": "employee1",
+        "role": "employee",
+        "tableNo": 0,
+        "token": ""
+    },
+    {
+        "username": "table1",
+        "password": "table1",
+        "role": "customer",
+        "tableNo": 1,
+        "token": ""
+    },
+    {
+        "username": "table2",
+        "password": "table2",
+        "role": "customer",
+        "tableNo": 2,
+        "token": ""
+    },
+    {
+        "username": "table3",
+        "password": "table3",
+        "role": "customer",
+        "tableNo": 3,
+        "token": ""
+    }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "tableNo": 1,
+    "order": [
+      { "cout": 5, "name": "หมูสามชั้น", "price": 40 },
+      { "cout": 5, "name": "เนื้อลาย", "price": 120 }
+    ],
+    "orderTime": { "$date": "2021-12-15T13:49:51.141Z" },
+    "status": "success",
+    "totalPrice": 800
+  },
+  {
+    "tableNo": 5,
+    "order": [{ "cout": 5, "name": "หมูสามชั้น", "price": 40 }],
+    "orderTime": { "$date": "2021-12-15T18:49:51.141Z" },
+    "status": "waiting",
+    "totalPrice": 200
+  },
+  {
+    "tableNo": 5,
+    "order": [{ "cout": 5, "name": "หมูสามชั้น", "price": 40 }],
+    "orderTime": { "$date": "2021-12-15T18:49:51.141Z" },
+    "status": "pending",
+    "totalPrice": 200
+  }
+]

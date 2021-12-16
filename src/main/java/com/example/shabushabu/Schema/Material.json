@@ -1,0 +1,32 @@
+[
+    {
+        "mats_name": "เบค่อน",
+        "mats_left": 100,
+        "price": 17
+    },
+    {
+        "mats_name": "เนื้อสัน",
+        "mats_left": 100,
+        "price": 30
+    },
+    {
+        "mats_name": "หอยเชลล์",
+        "mats_left": 100,
+        "price": 35
+    },
+    {
+        "mats_name": "หมูสามชั้น",
+        "mats_left": 100,
+        "price": 43
+    },
+    {
+        "mats_name": "ผักบุ้ง",
+        "mats_left": 100,
+        "price": 10
+    },
+    {
+        "mats_name": "เนื้อลาย",
+        "mats_left": 100,
+        "price": 27
+    }
+]
