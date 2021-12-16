@@ -2,6 +2,7 @@ package com.example.shabushabu.pojo;
 
 import java.io.Serializable;
 
+
 public class ServeOrder implements Serializable {
     private String _id;
     private String name;

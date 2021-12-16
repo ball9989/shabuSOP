@@ -1,21 +1,11 @@
 package com.example.shabushabu.manager;
 
-import com.example.shabushabu.OrderCardView;
 import com.example.shabushabu.pojo.Menu;
 import com.example.shabushabu.pojo.Menus;
-import com.example.shabushabu.pojo.Order;
-import com.example.shabushabu.pojo.Orders;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MenuData extends VerticalLayout {
     private Menus menu;

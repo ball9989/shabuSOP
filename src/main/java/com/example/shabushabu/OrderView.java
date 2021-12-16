@@ -1,6 +1,6 @@
 package com.example.shabushabu;
 
-import com.example.shabushabu.pojo.Orders;
+import com.example.shabushabu.pojo.Menus;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -9,9 +9,6 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.splitlayout.SplitLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -28,7 +25,7 @@ public class OrderView extends Div {
     private FormLayout formLayout = new FormLayout();
     private int numberArr = 0;
     private int total = 0;
-    private Orders orders;
+    private Menus menus;
     private ArrayList<OrderDetailView> cart = new ArrayList<>();
     VerticalLayout rightLayout = new VerticalLayout();
     Button confirmOrder = new Button("ยืนยัน ราคารวมทั้งหมด 0 บาท");
@@ -39,9 +36,9 @@ public class OrderView extends Div {
         this.add(title);
 
         addAttachListener(event -> {
-            getOrders();
-            for (int i = 0; i < orders.model.size(); i++) {
-                this.formLayout.add(getOrderCardView(orders.model.get(i).get_id(), orders.model.get(i).getName(), orders.model.get(i).getDetail(), orders.model.get(i).getImage(), orders.model.get(i).getPrice()+""));
+            getMenus();
+            for (int i = 0; i < menus.model.size(); i++) {
+                this.formLayout.add(getOrderCardView(menus.model.get(i).get_id(), menus.model.get(i).getName(), menus.model.get(i).getDetail(), menus.model.get(i).getImage(), menus.model.get(i).getPrice()+""));
             }
         });
 
@@ -105,13 +102,13 @@ public class OrderView extends Div {
             System.out.println("test " +out);
         });
     }
-    public void getOrders(){
-        Orders out = WebClient.create().get()
-                .uri("http://localhost:8080/orders")
+    public void getMenus(){
+        Menus out = WebClient.create().get()
+                .uri("http://localhost:8080/menu")
                 .retrieve()
-                .bodyToMono(Orders.class)
+                .bodyToMono(Menus.class)
                 .block();
-        orders = out;
+        menus = out;
     }
 
     public void addOrderToCart(String id, String name, String detail, String price) {

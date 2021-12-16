@@ -2,8 +2,6 @@ package com.example.shabushabu.controller;
 
 import com.example.shabushabu.pojo.Menu;
 import com.example.shabushabu.pojo.Menus;
-import com.example.shabushabu.pojo.Order;
-import com.example.shabushabu.pojo.Orders;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,11 +1,7 @@
 package com.example.shabushabu;
 
-import com.example.shabushabu.employee.AddMaterial;
 import com.example.shabushabu.employee.MaterialDetail;
-import com.example.shabushabu.employee.PaymentConfirm;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -55,10 +51,6 @@ public class MaterialView extends VerticalLayout {
         addMaterial.addClassName("d-flex");
         this.add(addMaterial, mainLayout);
 
-        addMaterial.addClickListener(event -> {
-            rightLayout.remove(material);
-            rightLayout.add(new AddMaterial());
-        });
     }
 
     public Div createMaterialCard() {
