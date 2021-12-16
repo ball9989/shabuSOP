@@ -16,26 +16,27 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MenuData extends VerticalLayout {
-    private Orders orders;
+    private Orders menu;
     public MenuData(){
-        getOrders();
+        getMenu();
         H2 title = new H2("เมนู");
         Grid<Order> grid = new Grid<>(Order.class, false);
         grid.addColumn(Order::getName).setHeader("ชื่ออาหาร");
         grid.addColumn(Order::getPrice).setHeader("ราคา (บาท)");
         grid.addColumn(Order::getDetail).setHeader("รายละเอียด");
-        grid.setItems(orders.model);
+        grid.setItems(menu.model);
         add(title,grid);
         setWidth("100%");
         setVisible(false);
     }
-    public void getOrders(){
+
+    public void getMenu(){
         Orders out = WebClient.create().get()
-                .uri("http://localhost:8080/orders")
+                .uri("http://localhost:8080/menu")
                 .retrieve()
                 .bodyToMono(Orders.class)
                 .block();
-        orders = out;
-        System.out.println(out);
+        menu = out;
+        System.out.println("getMenu"+out.model);
     }
 }

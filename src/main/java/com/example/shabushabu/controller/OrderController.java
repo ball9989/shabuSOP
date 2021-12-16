@@ -21,6 +21,7 @@ public class OrderController {
     private RabbitTemplate rabbitTemplate;
 
     protected Orders orders = new Orders();
+    protected Orders menu = new Orders();
 
     @RequestMapping(value = "/orders",method = RequestMethod.GET)
     public ResponseEntity<?> getOrders(){
@@ -32,8 +33,10 @@ public class OrderController {
 
     @RequestMapping(value = "/menu",method = RequestMethod.GET)
     public ResponseEntity<?> getMenu(){
-        Object o = rabbitTemplate.convertSendAndReceive("Direct","test","get Menu Data");
-        ArrayList<Order> menu = (ArrayList<Order>) o;
+        Object obj = rabbitTemplate.convertSendAndReceive("Direct","test","get Menu Data");
+        ArrayList<Order> menulist = (ArrayList<Order>) obj;
+        menu.model = menulist;
+
         return ResponseEntity.ok(menu);
     };
 
