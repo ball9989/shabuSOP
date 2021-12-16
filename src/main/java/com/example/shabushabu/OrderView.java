@@ -33,6 +33,8 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
     VerticalLayout rightLayout = new VerticalLayout();
     Button confirmOrder = new Button("ยืนยัน ราคารวมทั้งหมด 0 บาท");
     H1 title = new H1("Order Menu Table 1");
+    FormLayout headerOrder = new FormLayout();
+    Label headerLabel = new Label("สั่งอาหาร");
 
     @Override
     public void setParameter(BeforeEvent event, String parameter) {
@@ -59,9 +61,6 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         this.horizontalLayout.add(formLayout);
 
         //ด้านขวา
-
-        FormLayout headerOrder = new FormLayout();
-        Label headerLabel = new Label("สั่งอาหาร");
         headerLabel.addClassName("h3");
         headerOrder.add(headerLabel);
         rightLayout.add(headerOrder);
@@ -94,7 +93,7 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         confirmOrder.addClickListener(event -> {
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("size", cart.size()+"");
-            formData.add("tableNo", "1");
+            formData.add("tableNo", table);
             formData.add("totalPrice", total+"");
             formData.add("status", "waiting");
             for (int i=0;i< cart.size();i++) {
@@ -114,6 +113,12 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
                     .bodyToMono(Boolean.class)
                     .block();
             System.out.println("test " +out);
+            this.cart.clear();
+            this.rightLayout.removeAll();
+            this.total = 0;
+            this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
+            rightLayout.add(headerOrder);
+
         });
     }
     public void getMenus(){

@@ -22,7 +22,7 @@ public class OrderService {
         System.out.println("consumer"+"table number "+ order.getTableNo() + " " + order.getOrders());
         this.respository.save(order);
     }
-    @RabbitListener(queues = "getOrderQueue")
+    @RabbitListener(queues = "GetOrderQueue")
     public List<Order> getOrder() {
         return respository.findAll();
     }
