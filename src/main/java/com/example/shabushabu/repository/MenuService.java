@@ -21,4 +21,16 @@ public class MenuService {
         return repository.findAll();
     }
 
+    @RabbitListener(queues = "AddMenuQueue")
+    public void addMenu(Menu menu){
+        System.out.println("addNewMenu : "+menu.getName());
+        this.repository.save(menu);
+    }
+
+    @RabbitListener(queues = "DeleteMenuQueue")
+    public void deleteMenu(String _id){
+        System.out.println("Delete :"+_id);
+        this.repository.deleteById(_id);
+    }
+
 }

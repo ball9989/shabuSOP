@@ -17,15 +17,18 @@ public class Menu implements Serializable {
     private String image;
     private String detail;
     private int price;
+    private int mats_left;
+    private int mats_cost;
 
     public Menu (){}
 
-    public Menu (String _id, String name, String image, String detail, int price){
+    public Menu (String _id, String name, String image, String detail, int price,int mats_left,int mats_cost){
         this._id = _id;
         this.name = name;
         this.image = image;
         this.detail = detail;
         this.price = price;
-
+        this.mats_left = mats_left;
+        this.mats_cost = mats_cost;
     }
 }
