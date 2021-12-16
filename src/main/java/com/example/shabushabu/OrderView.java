@@ -84,6 +84,7 @@ public class OrderView extends Div {
         confirmOrder.addClickListener(event -> {
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("size", cart.size()+"");
+            formData.add("tableNo", "a1");
             for (int i=0;i< cart.size();i++) {
 //                MultiValueMap<String, String> formDataSub = new LinkedMultiValueMap<>();
                 formData.add(i+"_id", cart.get(i).getId()+"");
