@@ -48,7 +48,9 @@ public class ManagerView extends HorizontalLayout {
         }
         add(drawer,data);
         employeeBn.addClickListener(e->{getInfo(employee);});
-        food.addClickListener(e->{getInfo(menu);});
+        food.addClickListener(e->{
+            getInfo(menu);
+        });
     }
     public void getInfo(Component c){
         for (int i=0;i<components.size();i++){

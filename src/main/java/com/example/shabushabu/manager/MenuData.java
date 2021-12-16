@@ -1,6 +1,8 @@
 package com.example.shabushabu.manager;
 
 import com.example.shabushabu.OrderCardView;
+import com.example.shabushabu.pojo.Menu;
+import com.example.shabushabu.pojo.Menus;
 import com.example.shabushabu.pojo.Order;
 import com.example.shabushabu.pojo.Orders;
 import com.vaadin.flow.component.button.Button;
@@ -16,26 +18,27 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MenuData extends VerticalLayout {
-    private Orders orders;
+    private Menus menu;
     public MenuData(){
-        getOrders();
+        getMenu();
         H2 title = new H2("เมนู");
-        Grid<Order> grid = new Grid<>(Order.class, false);
-        grid.addColumn(Order::getName).setHeader("ชื่ออาหาร");
-        grid.addColumn(Order::getPrice).setHeader("ราคา (บาท)");
-        grid.addColumn(Order::getDetail).setHeader("รายละเอียด");
-        grid.setItems(orders.model);
+        Grid<Menu> grid = new Grid<>(Menu.class, false);
+        grid.addColumn(Menu::getName).setHeader("ชื่ออาหาร");
+        grid.addColumn(Menu::getPrice).setHeader("ราคา (บาท)");
+        grid.addColumn(Menu::getDetail).setHeader("รายละเอียด");
+        grid.setItems(menu.model);
         add(title,grid);
         setWidth("100%");
         setVisible(false);
     }
-    public void getOrders(){
-        Orders out = WebClient.create().get()
-                .uri("http://localhost:8080/orders")
+
+    public void getMenu(){
+        Menus out = WebClient.create().get()
+                .uri("http://localhost:8080/menu")
                 .retrieve()
-                .bodyToMono(Orders.class)
+                .bodyToMono(Menus.class)
                 .block();
-        orders = out;
-        System.out.println(out);
+        menu = out;
+        System.out.println("getMenu"+out.model);
     }
 }

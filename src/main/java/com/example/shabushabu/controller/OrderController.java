@@ -54,4 +54,6 @@ public class OrderController {
         rabbitTemplate.convertAndSend("ShabuOrder", "addOrder", "");
         return true;
     }
+
+
 }
