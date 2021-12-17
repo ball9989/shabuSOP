@@ -11,11 +11,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Arrays;
 import java.util.List;
 
-public class OrderData extends VerticalLayout {
+public class OrderGridView extends VerticalLayout {
     Orders orders = new Orders();
 
 
-    public OrderData(){
+    public OrderGridView(){
         getOrders();
         H2 title = new H2("รายการออร์เดอร์");
         Grid<Order> grid = new Grid<>(Order.class,false);

@@ -27,4 +27,5 @@ public class Account implements Serializable {
         this.tableNo = tableNo;
         this.token = token;
     }
+
 }

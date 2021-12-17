@@ -48,6 +48,21 @@ public class MenuController {
         return true;
     }
 
+    @RequestMapping(value = "/editMenu", method = RequestMethod.POST)
+    public boolean editMenu(@RequestBody MultiValueMap<String, String> menu) {
+        Map<String, String> d = menu.toSingleValueMap();
+        String _id = d.get("_id");
+        String name = d.get("name");
+        Integer mats_left = Integer.parseInt(d.get("mats_left"));
+        Integer mats_cost = Integer.parseInt(d.get("mats_cost"));
+        String detail = d.get("detail");
+        String image = d.get("image");
+        Integer price = Integer.parseInt(d.get("price"));
+        System.out.println("Edit controller :"+name+mats_left+mats_cost+image+price);
+        rabbitTemplate.convertAndSend("ShabuMenu", "editMenu", new Menu(_id,name,image,detail,price,mats_left,mats_cost));
+        return true;
+    }
+
     @RequestMapping(value = "/deleteMenu", method = RequestMethod.POST)
     public boolean deleteMenu(@RequestBody MultiValueMap<String, String> menu){
         Map<String, String> d = menu.toSingleValueMap();

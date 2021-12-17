@@ -31,4 +31,7 @@ public class Menu implements Serializable {
         this.mats_left = mats_left;
         this.mats_cost = mats_cost;
     }
+
+    public Menu(String id, String username) {
+    }
 }

@@ -9,11 +9,8 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.component.grid.Grid;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @StyleSheet("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
@@ -22,25 +19,23 @@ public class ManagerView extends HorizontalLayout {
     private VerticalLayout drawer,data;
     private Button employeeBn,supplies,orders,food;
     private List<Component> components;
-    private EmpData employee = new EmpData();
-    private MenuData menu = new MenuData();
-    private OrderData orderData = new OrderData();
+    private MenuGridView menu = new MenuGridView();
+    private OrderGridView orderGridView = new OrderGridView();
+    private AccountGridView accountGridView = new AccountGridView();
 
     public ManagerView(){
         components = new ArrayList<Component>();
-        components.add(employee);
+        components.add(accountGridView);
         components.add(menu);
-        components.add(orderData);
-        employeeBn = new Button("พนักงาน", new Icon(VaadinIcon.USER));
+        components.add(orderGridView);
+        employeeBn = new Button("ผู้ใช้งาน", new Icon(VaadinIcon.USER));
         orders = new Button("ออร์เดอร์",new Icon(VaadinIcon.CART));
-        food = new Button("เมนู", new Icon(VaadinIcon.BOOK));
-        supplies = new Button("วัตถุดิบ",new Icon(VaadinIcon.PACKAGE));
+        food = new Button("เมนูและคลัง", new Icon(VaadinIcon.BOOK));
         drawer = new VerticalLayout();
         employeeBn.setWidth("100%");
-        supplies.setWidth("100%");
         orders.setWidth("100%");
         food.setWidth("100%");
-        drawer.add(employeeBn,orders,supplies,food);
+        drawer.add(employeeBn,orders,food);
         drawer.setWidth("20%");
         drawer.setHeight("960px");
         drawer.addClassName("border");
@@ -49,8 +44,8 @@ public class ManagerView extends HorizontalLayout {
             data.add(components.get(i));
         }
         add(drawer,data);
-        employeeBn.addClickListener(e->{getInfo(employee);});
-        orders.addClickListener(e->{getInfo(orderData);});
+        employeeBn.addClickListener(e->{getInfo(accountGridView);});
+        orders.addClickListener(e->{getInfo(orderGridView);});
         food.addClickListener(e->{
             getInfo(menu);
         });

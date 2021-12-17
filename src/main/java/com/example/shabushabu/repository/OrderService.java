@@ -1,6 +1,5 @@
 package com.example.shabushabu.repository;
 
-import com.example.shabushabu.pojo.Menu;
 import com.example.shabushabu.pojo.Order;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;

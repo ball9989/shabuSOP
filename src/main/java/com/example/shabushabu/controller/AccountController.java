@@ -1,7 +1,10 @@
 package com.example.shabushabu.controller;
 
 import com.example.shabushabu.pojo.Account;
+import com.example.shabushabu.pojo.Accounts;
+import com.example.shabushabu.pojo.Menu;
 import com.example.shabushabu.repository.LoginService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -11,12 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
 public class AccountController {
     @Autowired
     private LoginService accountService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    protected Accounts accounts = new Accounts();
 
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody MultiValueMap<String, String> formData) {
@@ -40,5 +48,23 @@ public class AccountController {
             throw e;
         }
         return ResponseEntity.ok(sendBack);
+    }
+
+    @RequestMapping(value = "/getAccount",method = RequestMethod.GET)
+    public ResponseEntity<?> getAccount(){
+        Object obj = rabbitTemplate.convertSendAndReceive("ShabuAccount","getAccount","get Data");
+        ArrayList<Account> accountList = (ArrayList<Account>) obj;
+        accounts.model = accountList;
+        return ResponseEntity.ok(accounts);
+    };
+
+    @RequestMapping(value = "/editRole",method = RequestMethod.POST)
+    public Boolean editMenu(@RequestBody MultiValueMap<String, String> account){
+        Map<String, String> d = account.toSingleValueMap();
+        String id = d.get("id");
+        String role = d.get("role");
+        rabbitTemplate.convertAndSend("ShabuAccount", "editAccount", );
+        System.out.println("edit Account");
+        return true;
     }
 }

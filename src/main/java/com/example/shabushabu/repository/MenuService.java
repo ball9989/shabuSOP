@@ -13,7 +13,9 @@ import java.util.List;
 public class MenuService {
     @Autowired
     private MenuRespository repository;
+
     public MenuService(MenuRespository repository){
+
         this.repository = repository;
     }
 
@@ -36,6 +38,12 @@ public class MenuService {
     @RabbitListener(queues = "AddMenuQueue")
     public void addMenu(Menu menu){
         System.out.println("addNewMenu : "+menu.getName());
+        this.repository.save(menu);
+    }
+
+    @RabbitListener(queues = "EditMenuQueue")
+    public void editMenu(Menu menu){
+        System.out.println("editMenu : "+menu.getName());
         this.repository.save(menu);
     }
 
