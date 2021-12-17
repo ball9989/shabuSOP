@@ -23,7 +23,8 @@ public class OrderGridView extends VerticalLayout {
     Orders orders = new Orders();
     private int index = 0;
     private String orderId;
-
+    private Text orderIdText = new Text("เลขออร์เดอร์");
+    private Text tableNoText = new Text("");
     public OrderGridView(){
         getOrders();
         Dialog dialog = new Dialog();
@@ -43,6 +44,8 @@ public class OrderGridView extends VerticalLayout {
             view.addClickListener(e->{
                 this.index = orders.model.indexOf(item);
                 this.orderId = item.get_id();
+                this.orderIdText.setText("เลขออร์เดอร์ : "+item.get_id());
+                this.tableNoText.setText("เลขโต๊ะ : "+item.getTableNo()+" ");
                 dialog.open();
             });
             return view;
@@ -64,9 +67,9 @@ public class OrderGridView extends VerticalLayout {
         grid.addColumn(ServeOrder::getPrice).setHeader("ราคาต่อชิ้น");
         grid.addColumn(ServeOrder::getTotalPrice).setHeader("ราคารวม");
 
-        Text orderId = new Text("เลขออร์เดอร์");
+
         VerticalLayout fieldLayout = new VerticalLayout();
-        fieldLayout.add(orderId);
+        fieldLayout.add(tableNoText,orderIdText);
         fieldLayout.setSpacing(false);
         fieldLayout.setPadding(false);
         fieldLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
