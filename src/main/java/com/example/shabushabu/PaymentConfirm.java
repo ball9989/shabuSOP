@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class PaymentConfirm extends FormLayout {
     VerticalLayout mainLayout = new VerticalLayout();
+    String statusVal = "";
     FormLayout buttonLayout = new FormLayout();
     H5 tableNumber = new H5("โต๊ะ : ");
     H5 status = new H5("สถานะ : ");
@@ -34,6 +35,7 @@ public class PaymentConfirm extends FormLayout {
     public void setPaymentConfirm(Integer tableNo, String status, Double totalPrice, ArrayList<ServeOrder> arrayList){
         this.tableNumber.setText("โต๊ะ : "+tableNo);
         this.status.setText("สถานะ : "+status);
+        this.statusVal = status;
         this.totalPrice.setText("ราคารวมทั้งหมด : "+totalPrice);
         grid.setItems(arrayList);
     }
