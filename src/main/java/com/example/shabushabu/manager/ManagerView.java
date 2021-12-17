@@ -24,11 +24,13 @@ public class ManagerView extends HorizontalLayout {
     private List<Component> components;
     private EmpData employee = new EmpData();
     private MenuData menu = new MenuData();
+    private OrderData orderData = new OrderData();
 
     public ManagerView(){
         components = new ArrayList<Component>();
         components.add(employee);
         components.add(menu);
+        components.add(orderData);
         employeeBn = new Button("พนักงาน", new Icon(VaadinIcon.USER));
         orders = new Button("ออร์เดอร์",new Icon(VaadinIcon.CART));
         food = new Button("เมนู", new Icon(VaadinIcon.BOOK));
@@ -48,6 +50,7 @@ public class ManagerView extends HorizontalLayout {
         }
         add(drawer,data);
         employeeBn.addClickListener(e->{getInfo(employee);});
+        orders.addClickListener(e->{getInfo(orderData);});
         food.addClickListener(e->{
             getInfo(menu);
         });
