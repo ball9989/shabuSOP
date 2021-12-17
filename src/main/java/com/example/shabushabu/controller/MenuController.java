@@ -3,6 +3,7 @@ package com.example.shabushabu.controller;
 import com.example.shabushabu.pojo.Menu;
 import com.example.shabushabu.pojo.Menus;
 import com.example.shabushabu.pojo.Order;
+import com.example.shabushabu.repository.MenuService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class MenuController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
     protected Menus menu = new Menus();
+    @Autowired
+    private MenuService menuService;
 
     @RequestMapping(value = "/menu",method = RequestMethod.GET)
     public ResponseEntity<?> getMenu(){
@@ -50,6 +53,16 @@ public class MenuController {
         Map<String, String> d = menu.toSingleValueMap();
         String _id = d.get("_id");
         rabbitTemplate.convertAndSend("ShabuMenu","deleteMenu", _id);
+        return true;
+    }
+
+    @RequestMapping(value = "/updateMat", method = RequestMethod.POST)
+    public boolean updateMat(@RequestBody MultiValueMap<String, String> keyMat) {
+        Map<String, String> d = keyMat.toSingleValueMap();
+        Integer size = Integer.parseInt(d.get("size"));
+        for (int i=0;i<size;i++) {
+            menuService.updateMat(d.get(i+"_id"), Integer.parseInt(d.get(i+"_count")));
+        }
         return true;
     }
 }
