@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,6 +15,17 @@ public class MenuService {
     private MenuRespository repository;
     public MenuService(MenuRespository repository){
         this.repository = repository;
+    }
+
+    public void updateMat(String id, Integer count) {
+        List<Menu> mats = repository.findAll();
+        for (int i=0;i<mats.size();i++) {
+            if (mats.get(i).get_id().equals(id)) {
+                Integer matLeft = mats.get(i).getMats_left();
+                mats.get(i).setMats_left(matLeft - count);
+                this.repository.save(mats.get(i));
+            }
+        }
     }
 
     @RabbitListener(queues = "GetMenuQueue")

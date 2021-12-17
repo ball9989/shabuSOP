@@ -23,7 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 
 @StyleSheet("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-@Route(value = "serve")
+@Route(value = "serve", layout = EmployeeView.class)
 public class ServeView extends VerticalLayout {
 
     ArrayList<ServeOrder> firstList = new ArrayList<>();
@@ -86,7 +86,22 @@ public class ServeView extends VerticalLayout {
 
         //confirm
         this.serveConfirm.confirmBtn.addClickListener(event -> {
-            System.out.println("test click");
+            System.out.println("test click "+this.serveConfirm.serveOrders);
+            MultiValueMap<String, String> formDataMat = new LinkedMultiValueMap<>();
+            formDataMat.add("size", this.serveConfirm.serveOrders.size() + "");
+            for (int i=0;i<this.serveConfirm.serveOrders.size();i++) {
+                String menuId = this.serveConfirm.serveOrders.get(i).get_id();
+                menuId = menuId.substring(9, 33);
+                formDataMat.add(i+"_id", menuId);
+                formDataMat.add(i+"_count", this.serveConfirm.serveOrders.get(i).getCount() + "");
+                System.out.println("id menu " + menuId + " " + this.serveConfirm.serveOrders.get(i).getName());
+            }
+            Boolean outMat = WebClient.create().post().uri("http://localhost:8080/updateMat")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formDataMat))
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("_id", selectId);
             Boolean out = WebClient.create().post().uri("http://localhost:8080/orders/confirm")
@@ -108,10 +123,6 @@ public class ServeView extends VerticalLayout {
             }
             this.selectId = "";
             this.serveConfirm.clearStage();
-//            this.serveConfirm = new ServeConfirm(firstList);
-//            rightLayout.removeAll();
-//            rightLayout.add(serveConfirm);
-
         });
 
 

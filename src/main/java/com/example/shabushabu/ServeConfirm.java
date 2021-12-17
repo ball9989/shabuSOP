@@ -25,6 +25,8 @@ public class ServeConfirm extends FormLayout {
     Grid<ServeOrder> grid = new Grid<>(ServeOrder.class, false);
     String _id;
 
+    ArrayList<ServeOrder> serveOrders = new ArrayList<>();
+
     private Order order;
     public ServeConfirm() {}
     public ServeConfirm(ArrayList<ServeOrder> arrayList) {
@@ -48,6 +50,7 @@ public class ServeConfirm extends FormLayout {
         this.grid.setItems(arrayList);
         this._id = _id;
         this.order = new Order(_id, tableNo, totalPrice, status, arrayList);
+        this.serveOrders = arrayList;
     }
 
     public void clearStage() {

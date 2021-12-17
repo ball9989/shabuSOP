@@ -48,7 +48,7 @@ public class EmployeeView extends AppLayout {
 
         addToDrawer(new VerticalLayout(
                 listLink,
-                new RouterLink("Login", LoginView.class)
+                new RouterLink("Serve", ServeView.class)
         ));
     }
 }
