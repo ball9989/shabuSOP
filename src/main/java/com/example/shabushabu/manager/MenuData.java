@@ -2,6 +2,7 @@ package com.example.shabushabu.manager;
 
 import com.example.shabushabu.pojo.Menu;
 import com.example.shabushabu.pojo.Menus;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -38,6 +39,7 @@ public class MenuData extends VerticalLayout {
             ,menuDetail = new H5("คำอธิบายเมนู");
     private Button addMenu;
     private H2 title = new H2("เมนูทั้งหมด");
+    private Boolean nullFound = false;
     Grid<Menu> grid = new Grid<>(Menu.class, false);
     public MenuData(){
         getMenu();
@@ -116,17 +118,23 @@ public class MenuData extends VerticalLayout {
         fieldLayout.setPadding(false);
         fieldLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
         Button cancelButton = new Button("ยกเลิก", e -> dialog.close());
-
         Button saveButton = new Button("เพิ่มเมนู");
+
         saveButton.addClickListener(e->{
+            String name,mats_left,mats_cost,image,price,detail;
+            name = titleField.getValue();
+            mats_left = countField.getValue();
+            mats_cost = costField.getValue();
+            image = imgUrl.getValue();
+            price = priceField.getValue();
+            detail = priceField.getValue();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            formData.add("name", titleField.getValue());
-            formData.add("mats_left", countField.getValue());
-            formData.add("mats_cost", costField.getValue());
-            formData.add("image", imgUrl.getValue());
-            formData.add("price", priceField.getValue());
-            formData.add("detail", detailArea.getValue());
-            Boolean nullFound = false;
+            formData.add("name", name);
+            formData.add("mats_left", mats_left);
+            formData.add("mats_cost", mats_cost);
+            formData.add("image", image);
+            formData.add("price", price);
+            formData.add("detail", detail);
             try {
                 Boolean out = WebClient.create()
                         .post()
@@ -147,7 +155,7 @@ public class MenuData extends VerticalLayout {
                 noti.open();
             }
             if(nullFound == false){
-                Notification noti = new Notification("เพิ่มเมนู "+titleField.getValue()+" แล้ว",2000);
+                Notification noti = new Notification("เพิ่มเมนู "+name+" แล้ว",2000);
                 noti.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 noti.setPosition(Notification.Position.BOTTOM_END);
                 noti.open();
@@ -181,6 +189,9 @@ public class MenuData extends VerticalLayout {
                 .block();
         menu = out;
     }
+//    public void addMenu(String name,String mats_left,String mats_cost,String image,String price,String detail){
+//
+//    }
 
     public void deleteMenu(String id){
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
@@ -197,4 +208,5 @@ public class MenuData extends VerticalLayout {
         getMenu();
         grid.setItems(menu.model);
     }
+
 }

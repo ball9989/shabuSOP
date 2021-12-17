@@ -16,7 +16,7 @@ public class MenuService {
         this.repository = repository;
     }
 
-    @RabbitListener(queues = "AddProductQueue")
+    @RabbitListener(queues = "GetMenuQueue")
     public List<Menu> getMenu() {
         return repository.findAll();
     }

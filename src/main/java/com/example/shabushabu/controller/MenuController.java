@@ -24,7 +24,7 @@ public class MenuController {
 
     @RequestMapping(value = "/menu",method = RequestMethod.GET)
     public ResponseEntity<?> getMenu(){
-        Object obj = rabbitTemplate.convertSendAndReceive("Direct","test","get Menu Data");
+        Object obj = rabbitTemplate.convertSendAndReceive("ShabuMenu","getMenu","get Menu Data");
         ArrayList<Menu> menulist = (ArrayList<Menu>) obj;
         menu.model = menulist;
 
@@ -41,7 +41,7 @@ public class MenuController {
         String image = d.get("image");
         Integer price = Integer.parseInt(d.get("price"));
         System.out.println(name+mats_left+mats_cost+image+price);
-        rabbitTemplate.convertAndSend("ShabuOrder", "addMenu", new Menu(null,name,image,detail,price,mats_left,mats_cost));
+        rabbitTemplate.convertAndSend("ShabuMenu", "addMenu", new Menu(null,name,image,detail,price,mats_left,mats_cost));
         return true;
     }
 
@@ -49,7 +49,7 @@ public class MenuController {
     public boolean deleteMenu(@RequestBody MultiValueMap<String, String> menu){
         Map<String, String> d = menu.toSingleValueMap();
         String _id = d.get("_id");
-        rabbitTemplate.convertAndSend("ShabuOrder","deleteMenu", _id);
+        rabbitTemplate.convertAndSend("ShabuMenu","deleteMenu", _id);
         return true;
     }
 }
