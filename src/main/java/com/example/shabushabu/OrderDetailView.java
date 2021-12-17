@@ -23,13 +23,15 @@ public class OrderDetailView extends FormLayout {
     Button plus = new Button(new Icon(VaadinIcon.PLUS_CIRCLE));
     Button minus = new Button(new Icon(VaadinIcon.MINUS_CIRCLE));
     Label number = new Label(count+"");
+    Integer mats_left;
 
     String name;
 
     public OrderDetailView(){}
 
-    public OrderDetailView(String id,String name, String detail, String price) {
+    public OrderDetailView(String id,String name, String detail, String price,Integer mats_left) {
         this.setId(id);
+        this.mats_left = mats_left;
         this.name = name;
         this.title.setText("ชื่ออาหาร: "+name);
         this.subtitle.setText("รายละเอียด: "+detail);

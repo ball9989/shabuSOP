@@ -50,7 +50,8 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         addAttachListener(event -> {
             getMenus();
             for (int i = 0; i < menus.model.size(); i++) {
-                this.formLayout.add(getOrderCardView(menus.model.get(i).get_id(), menus.model.get(i).getName(), menus.model.get(i).getDetail(), menus.model.get(i).getImage(), menus.model.get(i).getPrice()+""));
+                this.formLayout.add(getOrderCardView(menus.model.get(i).get_id(), menus.model.get(i).getName(), menus.model.get(i).getDetail(),
+                        menus.model.get(i).getImage(), menus.model.get(i).getPrice()+"", menus.model.get(i).getMats_left()));
             }
         });
 
@@ -130,8 +131,8 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         menus = out;
     }
 
-    public void addOrderToCart(String id, String name, String detail, String price) {
-        OrderDetailView cartItem = new OrderDetailView(id,name,detail,price);
+    public void addOrderToCart(String id, String name, String detail, String price,Integer mats_left) {
+        OrderDetailView cartItem = new OrderDetailView(id,name,detail,price,mats_left);
         cartItem.plus.addClickListener(e->{
             cartItem.count++;
             cartItem.number.setText(cartItem.count+"");
@@ -174,12 +175,14 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         }
     }
 
-    public Div getOrderCardView(String id, String name, String detail, String imageUri, String price) {
+    public Div getOrderCardView(String id, String name, String detail, String imageUri, String price, Integer mats_left) {
         Image image = new Image(imageUri, name);
         Div body = new Div();
         H5 title = new H5(name);
         H6 subtitle = new H6(detail);
         Paragraph para = new Paragraph(price);
+
+
         Button addOrder = new Button("เลือก");
 
         Div mainLayout = new Div();
@@ -194,7 +197,7 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         body.add(title,subtitle,para);
         addOrder.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addOrder.addClickListener(event -> {
-            this.addOrderToCart(id,name,detail,price);
+            this.addOrderToCart(id,name,detail,price,mats_left);
             this.total = 0;
             for (int i = 0; i < cart.size(); i++) {
                 total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
@@ -203,6 +206,12 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         });
         mainLayout.add(image);
         mainLayout.add(body);
+        if(mats_left <= 0){
+            addOrder.setEnabled(false);
+            addOrder.addThemeVariants(ButtonVariant.LUMO_ERROR);
+            addOrder.setText("หมด");
+        }
+
         mainLayout.add(addOrder);
 
         return mainLayout;
