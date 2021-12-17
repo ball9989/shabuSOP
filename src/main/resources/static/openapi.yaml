@@ -1,0 +1,274 @@
+openapi: 3.0.3
+info:
+  title: ShabuShabu API Documentation
+  description: API that provide for ShabuShabu
+  version: 1.0.0
+server:
+  - url: https://api.example.io/
+paths:
+  /menu:
+    get:
+      summary: Get Menu List
+      description: Returns a list of menu
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                # minItems: 1
+                # maxItems: 100
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: 61bc578949d416cc4d5c0d6a
+                      description: The ID of menu
+                    name:
+                      type: string
+                      example: หมูสามชั้น
+                      description: The name of menu
+                    image:
+                      type: string
+                      example: https://img.wongnai.com/p/1920x0/2019/05/06/23ac401d7bb54cd2a6015d5615c14289.jpg
+                      description: The ImageUrl of menu
+                    detail:
+                      type: string
+                      example: เนื้อสามชั้นละลายในปาก
+                      description: The detail of menu
+                    price:
+                      type: number
+                      example: 40
+                      description: The price of menu
+                    mats_left:
+                      type: number
+                      example: 100
+                      description: The amount of material for menu
+                    mats_cost:
+                      type: number
+                      example: 20
+                      description: The cost of material for menu
+  /addmenu:
+    post:
+      summary: Create Menu
+      description: Create new Menu
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: 61bc578949d416cc4d5c0d6a
+                  description: The ID of menu
+                name:
+                  type: string
+                  example: หมูสามชั้น
+                  description: The name of menu
+                image:
+                  type: string
+                  example: https://img.wongnai.com/p/1920x0/2019/05/06/23ac401d7bb54cd2a6015d5615c14289.jpg
+                  description: The ImageUrl of menu
+                detail:
+                  type: string
+                  example: เนื้อสามชั้นละลายในปาก
+                  description: The detail of menu
+                price:
+                  type: number
+                  example: 40
+                  description: The price of menu
+                mats_left:
+                  type: number
+                  example: 100
+                  description: The amount of material for menu
+                mats_cost:
+                  type: number
+                  example: 20
+                  description: The cost of material for menu
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+                exmaple: true
+                description: Return status of creating menu process
+
+  /deleteMenu:
+    delete:
+      summary: Delete Menu
+      description: Delete specific menu by menu_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: 61bc578949d416cc4d5c0d6a
+                  description: The ID of menu
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+                exmaple: true
+                description: Return status of deleting menu process
+
+
+  /updateMat:
+    post:
+      summary: Update amount material
+      description: update amount of material specific menu
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: 61bc578949d416cc4d5c0d6a
+                  description: The ID of menu
+                count:
+                  type: int
+                  example: 5
+                  description: The number of material used
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+                exmaple: true
+                description: Return status of updating material for menu success
+
+  /orders:
+    get:
+      summary: Get Order List
+      description: Returns a list of order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: 61bc578949d416cc4d5c0d6a
+                      description: The ID of this order
+                    tableNo:
+                      type: integer
+                      example: 1
+                      description: The number of table for this order
+                    totalPrice:
+                      type: double
+                      example: 120
+                      description: Total price for this order
+                    status:
+                      type: string
+                      example: success
+                      description: The state of this order
+                    order:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                            example: 61bc578949d416cc4d5c0d6a
+                            description: Id of menu
+                          name:
+                            type: string
+                            example: หมูสามชั้น
+                            description: menu name
+                          count:
+                            type: integer
+                            example: 1
+                            description: amount of this menu
+                          price:
+                            type: double
+                            example: 40
+                            description: price of this menu
+                          totalPrice:
+                            type: double
+                            example: 40
+                            description: total price of this menu
+
+  /sendOrder:
+    post:
+      summary: Add Order
+      description: Add order to orderList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: 61bc578949d416cc4d5c0d6a
+                  description: The ID of this order
+                tableNo:
+                  type: integer
+                  example: 1
+                  description: The number of table for this order
+                totalPrice:
+                  type: double
+                  example: 120
+                  description: Total price for this order
+                status:
+                  type: string
+                  example: waiting
+                  description: The state of this order
+                order:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: 61bc578949d416cc4d5c0d6a
+                        description: Id of menu
+                      name:
+                        type: string
+                        example: หมูสามชั้น
+                        description: menu name
+                      count:
+                        type: integer
+                        example: 1
+                        description: amount of this menu
+                      price:
+                        type: double
+                        example: 40
+                        description: price of this menu
+                      totalPrice:
+                        type: double
+                        example: 40
+                        description: total price of this menu
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+                exmaple: true
+                description: Return status of adding material for menu success

@@ -115,6 +115,14 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
+            Boolean mat = WebClient.create()
+                    .post()
+                    .uri("http://localhost:8080/updateMat")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
             System.out.println("test " +out);
             this.cart.clear();
             this.rightLayout.removeAll();
@@ -122,6 +130,12 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
             this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
             rightLayout.add(headerOrder);
 
+            this.formLayout.removeAll();
+            getMenus();
+            for (int i = 0; i < menus.model.size(); i++) {
+                this.formLayout.add(getOrderCardView(menus.model.get(i).get_id(), menus.model.get(i).getName(), menus.model.get(i).getDetail(),
+                        menus.model.get(i).getImage(), menus.model.get(i).getPrice()+"", menus.model.get(i).getMats_left()));
+            }
         });
     }
     public void getMenus(){

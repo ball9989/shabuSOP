@@ -6,10 +6,9 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -67,7 +66,11 @@ public class ServeView extends VerticalLayout {
         tableScroller.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
         tableScroller.setHeight("650px");
         tableScroller.setWidth("100%");
-        this.leftLayout.add(tableScroller);
+
+        H3 header = new H3("รายการเสิร์ฟ");
+        header.setClassName("ml-1");
+        header.setClassName("mt-1");
+        this.leftLayout.add(header,tableScroller);
 
         Scroller orderList = new Scroller();
         orderList.setHeight("200px");
@@ -86,22 +89,6 @@ public class ServeView extends VerticalLayout {
 
         //confirm
         this.serveConfirm.confirmBtn.addClickListener(event -> {
-            System.out.println("test click "+this.serveConfirm.serveOrders);
-            MultiValueMap<String, String> formDataMat = new LinkedMultiValueMap<>();
-            formDataMat.add("size", this.serveConfirm.serveOrders.size() + "");
-            for (int i=0;i<this.serveConfirm.serveOrders.size();i++) {
-                String menuId = this.serveConfirm.serveOrders.get(i).get_id();
-                menuId = menuId.substring(9, 33);
-                formDataMat.add(i+"_id", menuId);
-                formDataMat.add(i+"_count", this.serveConfirm.serveOrders.get(i).getCount() + "");
-                System.out.println("id menu " + menuId + " " + this.serveConfirm.serveOrders.get(i).getName());
-            }
-            Boolean outMat = WebClient.create().post().uri("http://localhost:8080/updateMat")
-                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                    .body(BodyInserters.fromFormData(formDataMat))
-                    .retrieve()
-                    .bodyToMono(Boolean.class)
-                    .block();
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("_id", selectId);
             Boolean out = WebClient.create().post().uri("http://localhost:8080/orders/confirm")
@@ -110,19 +97,31 @@ public class ServeView extends VerticalLayout {
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
-            tableLayout.removeAll();
 
-            this.getOrders();
-            for (int i = 0; i < orders.model.size(); i++) {
-                if (orders.model.get(i).getStatus().equals("waiting")) {
-                    Div tableCard = createTableCard(orders.model.get(i).get_id() ,orders.model.get(i).getTableNo(), orders.model.get(i).getStatus(), orders.model.get(i).getTotalPrice(), orders.model.get(i).getOrders());
-                    tableCard.addClassName("border");
-                    tableCard.setWidth("500px");
-                    this.tableLayout.add(tableCard);
+
+
+            if (out && this.serveConfirm.statusVal.equals("waiting")) {
+                tableLayout.removeAll();
+                this.getOrders();
+                for (int i = 0; i < orders.model.size(); i++) {
+                    if (orders.model.get(i).getStatus().equals("waiting")) {
+                        Div tableCard = createTableCard(orders.model.get(i).get_id() ,orders.model.get(i).getTableNo(), orders.model.get(i).getStatus(), orders.model.get(i).getTotalPrice(), orders.model.get(i).getOrders());
+                        tableCard.addClassName("border");
+                        tableCard.setWidth("500px");
+                        this.tableLayout.add(tableCard);
+                    }
                 }
+                this.selectId = "";
+                this.serveConfirm.clearStage();
+
+                this.serveConfirm.statusVal = "";
+
+                Notification a = new Notification("Serve Success", 5000);
+                a.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                a.open();
             }
-            this.selectId = "";
-            this.serveConfirm.clearStage();
+
+
         });
 
 

@@ -8,6 +8,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -58,7 +60,11 @@ public class PaymentView extends VerticalLayout {
         tableScroller.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
         tableScroller.setHeight("650px");
         tableScroller.setWidth("100%");
-        this.leftLayout.add(tableScroller);
+
+        H3 header = new H3("ชำระเงิน");
+        header.setClassName("ml-1");
+        header.setClassName("mt-1");
+        this.leftLayout.add(header,tableScroller);
 
         //set grid ไว้ทำ รายการอาหารที่เลือกก่อนจ่ายเงิน ถ้ามีเวลา
 //        Grid<Table> tableGrid = new Grid<>(Table.class, false);
@@ -88,8 +94,26 @@ public class PaymentView extends VerticalLayout {
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
+            if (out && this.paymentRight.statusVal.equals("pending")) {
+                this.paymentRight.clearStage();
+                this.tableLayout.removeAll();
+                getTables();
+                for (int i=0;i<tables.model.size();i++) {
+                    Div tableCard = createTableCard(tables.model.get(i).getTableNo(), tables.model.get(i).getTotalPrice(), tables.model.get(i).getStatus());
+                    tableCard.addClassName("border");
+                    this.tableLayout.add(tableCard);
+                }
 
-            this.paymentRight.clearStage();
+                Notification a = new Notification("Payment Success", 5000);
+                a.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                a.open();
+                this.paymentRight.statusVal = "";
+            }
+            if (out == false) {
+                Notification a = new Notification("Payment Fail", 5000);
+                a.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                a.open();
+            }
         });
 
         mainLayout.add(leftLayout, rightLayout);

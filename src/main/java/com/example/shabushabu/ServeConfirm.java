@@ -25,6 +25,8 @@ public class ServeConfirm extends FormLayout {
     Grid<ServeOrder> grid = new Grid<>(ServeOrder.class, false);
     String _id;
 
+    String statusVal = "";
+
     ArrayList<ServeOrder> serveOrders = new ArrayList<>();
 
     private Order order;
@@ -51,6 +53,8 @@ public class ServeConfirm extends FormLayout {
         this._id = _id;
         this.order = new Order(_id, tableNo, totalPrice, status, arrayList);
         this.serveOrders = arrayList;
+
+        this.statusVal = status;
     }
 
     public void clearStage() {
@@ -59,6 +63,5 @@ public class ServeConfirm extends FormLayout {
         this.totalPrice.setText("ราคารวมทั้งหมด : ");
         this.grid.setItems(new ArrayList<ServeOrder>());
         this._id = "";
-
     }
 }

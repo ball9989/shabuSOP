@@ -1,0 +1,12 @@
+[
+  {
+    "tableNo": 1,
+    "order": [
+      { "count": 5, "name": "หมูสามชั้น", "price": 40 },
+      { "count": 5, "name": "เนื้อลาย", "price": 120 }
+    ],
+    "orderTime": { "$date": "2021-12-15T13:49:51.141Z" },
+    "status": "success",
+    "totalPrice": 800
+  }
+]

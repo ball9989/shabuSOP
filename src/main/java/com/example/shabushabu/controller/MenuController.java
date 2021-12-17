@@ -75,8 +75,9 @@ public class MenuController {
     public boolean updateMat(@RequestBody MultiValueMap<String, String> keyMat) {
         Map<String, String> d = keyMat.toSingleValueMap();
         Integer size = Integer.parseInt(d.get("size"));
+        System.out.println(keyMat);
         for (int i=0;i<size;i++) {
-            menuService.updateMat(d.get(i+"_id"), Integer.parseInt(d.get(i+"_count")));
+            menuService.updateMat(d.get(i+"_id").substring(9, 33), Integer.parseInt(d.get(i+"_count")));
         }
         return true;
     }
