@@ -4,6 +4,7 @@ import com.example.shabushabu.pojo.Menu;
 import com.example.shabushabu.pojo.Order;
 import com.example.shabushabu.pojo.Orders;
 import com.example.shabushabu.pojo.ServeOrder;
+import com.example.shabushabu.repository.OrderService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ public class OrderController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
     protected Orders orders = new Orders();
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping(value = "/sendOrder", method = RequestMethod.POST)
     public boolean sendOrder(@RequestBody MultiValueMap<String, String> n) {
@@ -51,4 +54,17 @@ public class OrderController {
 
         return ResponseEntity.ok(orders);
     };
+
+    @RequestMapping(value = "/orders/confirm", method = RequestMethod.POST)
+    public Boolean confirmOrder(@RequestBody MultiValueMap<String, String> n) {
+        try {
+            Map<String, String> d = n.toSingleValueMap();
+            String _id = d.get("_id");
+            orderService.confirmOrder(_id);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
