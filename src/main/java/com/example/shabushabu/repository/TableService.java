@@ -1,8 +1,6 @@
 package com.example.shabushabu.repository;
 
-import com.example.shabushabu.pojo.Account;
-import com.example.shabushabu.pojo.Order;
-import com.example.shabushabu.pojo.Table;
+import com.example.shabushabu.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +15,29 @@ public class TableService {
     @Autowired
     private OrderRespository orderRespository;
 
+    @Autowired
+    private BillRepository billRepository;
+
     public void confirmPayment(Integer tableNo) {
         List<Order> orders = orderRespository.findAll();
+        Double totalPrice = 0.0;
+        String status = "success";
+        Bill bill = new Bill(null, tableNo, totalPrice,status,new ArrayList<ServeOrder>());
+
         for (int i=0;i<orders.size();i++) {
             if (orders.get(i).getTableNo() == tableNo && orders.get(i).getStatus().equals("pending")) {
                 orders.get(i).setStatus("success");
                 System.out.println("set status order "+ orders.get(i).getStatus());
                 orderRespository.save(orders.get(i));
+
+                for (int j=0;j<orders.get(i).getOrder().size();j++) {
+                    totalPrice += orders.get(i).getOrder().get(j).getPrice() * orders.get(i).getOrder().get(j).getCount();
+                    bill.getOrder().add(new ServeOrder(orders.get(i).getOrder().get(j).get_id(), orders.get(i).getOrder().get(j).getName(), orders.get(i).getOrder().get(j).getCount(), orders.get(i).getOrder().get(j).getPrice()));
+                }
             }
         }
+        bill.setTotalPrice(totalPrice);
+        billRepository.save(bill);
     }
 
     public List<Table> getTables() {
@@ -52,5 +64,9 @@ public class TableService {
             }
         }
         return  tables;
+    }
+
+    public List<Bill> getBills() {
+        return billRepository.findAll();
     }
 }
