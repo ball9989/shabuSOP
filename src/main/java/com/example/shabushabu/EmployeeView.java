@@ -26,7 +26,7 @@ public class EmployeeView extends AppLayout {
     }
 
     private void createHeader() {
-        H1 logo = new H1("My App");
+        H1 logo = new H1("Shabushabu");
         logo.addClassNames("text-l", "m-m");
 
         HorizontalLayout header = new HorizontalLayout(

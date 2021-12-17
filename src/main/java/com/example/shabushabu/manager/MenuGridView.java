@@ -117,7 +117,7 @@ public class MenuGridView extends VerticalLayout {
             group.setWidth("100%");
             return group;
         }).setWidth("15%").setFlexGrow(0).setHeader(addMenu);
-        grid.addColumn(Menu::getName).setHeader("ชื่อเมนู").setFlexGrow(0);
+        grid.addColumn(Menu::getName).setHeader("ชื่อเมนู").setFlexGrow(0).setWidth("15%");
         grid.addColumn(Menu::getMats_cost).setHeader("ราคาต้นทุน").setFlexGrow(0);
         grid.addColumn(Menu::getMats_left).setHeader("วัตถุดิบคงเหลือ").setFlexGrow(0).setWidth("10%");
         grid.addColumn(Menu::getPrice).setHeader("ราคาขาย").setFlexGrow(0);
