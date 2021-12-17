@@ -6,6 +6,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -134,11 +136,18 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
     public void addOrderToCart(String id, String name, String detail, String price,Integer mats_left) {
         OrderDetailView cartItem = new OrderDetailView(id,name,detail,price,mats_left);
         cartItem.plus.addClickListener(e->{
-            cartItem.count++;
-            cartItem.number.setText(cartItem.count+"");
-            this.total = 0;
-            for (int i = 0; i < cart.size(); i++) {
-                total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+            if(cartItem.mats_left > cartItem.count){
+                cartItem.count++;
+                cartItem.number.setText(cartItem.count+"");
+                this.total = 0;
+                for (int i = 0; i < cart.size(); i++) {
+                    total += Integer.parseInt(cart.get(i).price)*cart.get(i).count;
+                }
+            }
+            else{
+                Notification a = new Notification("วัตถุดิบไม่เพียงพอ",2000);
+                a.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                a.open();
             }
             this.confirmOrder.setText("ยืนยันการสั่งอาหาร ราคารวม: "+total+" ฿");
         });
