@@ -27,11 +27,6 @@ public class OrderGridView extends VerticalLayout {
     private Text tableNoText = new Text("");
     public OrderGridView(){
         getOrders();
-        Dialog dialog = new Dialog();
-        dialog.getElement().setAttribute("aria-label", "Create new employee");
-        dialog.setDraggable(true);
-        VerticalLayout dialogLayout = viewDialogLayout(dialog);
-        dialog.add(dialogLayout);
         H2 title = new H2("รายการออร์เดอร์");
         Grid<Order> grid = new Grid<>(Order.class,false);
         grid.setItems(orders.model);
@@ -46,6 +41,11 @@ public class OrderGridView extends VerticalLayout {
                 this.orderId = item.get_id();
                 this.orderIdText.setText("เลขออร์เดอร์ : "+item.get_id());
                 this.tableNoText.setText("เลขโต๊ะ : "+item.getTableNo()+" ");
+                Dialog dialog = new Dialog();
+                dialog.getElement().setAttribute("aria-label", "Create new employee");
+                dialog.setDraggable(true);
+                VerticalLayout dialogLayout = viewDialogLayout(dialog);
+                dialog.add(dialogLayout);
                 dialog.open();
             });
             return view;
@@ -60,6 +60,7 @@ public class OrderGridView extends VerticalLayout {
         headline.getStyle().set("margin", "var(--lumo-space-m) 0 0 0")
                 .set("font-size", "1.5em").set("font-weight", "bold");
 
+        System.out.println(index);
         Grid<ServeOrder> grid = new Grid<>(ServeOrder.class,false);
         grid.setItems(orders.model.get(index).getOrder());
         grid.addColumn(ServeOrder::getName).setHeader("ชื่อเมนู");
