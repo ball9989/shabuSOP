@@ -43,7 +43,7 @@ public class OrderView extends Div implements HasUrlParameter<String>  {
         this.table = parameter;
         this.title.setText("Order Menu Table: "+table);
     }
-    
+
 
     public OrderView(){
         title.addClassName("h1");

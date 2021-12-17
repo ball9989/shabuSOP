@@ -22,15 +22,4 @@ public class AccountService {
         return repository.findAll();
     }
 
-    @RabbitListener(queues = "EditAccountQueue")
-    public Boolean editAccount(String id,String role){
-        List<Account> account = repository.findAll();
-        for (int i=0;i<account.size();i++) {
-            if (account.get(i).get_id() == id) {
-                account.get(i).setRole(role);
-                repository.save(account.get(i));
-            }
-        }
-        return true;
-    }
 }

@@ -20,7 +20,6 @@ public class PaymentController {
     private TableService tableService;
     protected Tables tables = new Tables();
 
-    protected Bills bills = new Bills();
 
 
     @RequestMapping(value = "/tables", method = RequestMethod.GET)
@@ -34,14 +33,6 @@ public class PaymentController {
         return ResponseEntity.ok(tables);
     }
 
-    @RequestMapping(value = "/bills", method = RequestMethod.GET)
-    public ResponseEntity<?> getBills() {
-        Object obj = tableService.getBills();
-        ArrayList<Bill> billList = (ArrayList<Bill>) obj;
-        bills.model = billList;
-        System.out.println(billList);
-        return ResponseEntity.ok(bills.model);
-    }
 
     @RequestMapping(value = "/payment/confirm", method = RequestMethod.POST)
     public Boolean confirmOrder(@RequestBody MultiValueMap<String, String> n) {

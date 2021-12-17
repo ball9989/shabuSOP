@@ -58,13 +58,4 @@ public class AccountController {
         return ResponseEntity.ok(accounts);
     };
 
-    @RequestMapping(value = "/editRole",method = RequestMethod.POST)
-    public Boolean editMenu(@RequestBody MultiValueMap<String, String> account){
-        Map<String, String> d = account.toSingleValueMap();
-        String id = d.get("id");
-        String role = d.get("role");
-        rabbitTemplate.convertAndSend("ShabuAccount", "editAccount", );
-        System.out.println("edit Account");
-        return true;
-    }
 }
