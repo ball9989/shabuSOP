@@ -40,6 +40,7 @@ public class MenuData extends VerticalLayout {
     private Button addMenu;
     private H2 title = new H2("เมนูทั้งหมด");
     private Boolean nullFound = false;
+    private String deleteId, deleteName;
     Grid<Menu> grid = new Grid<>(Menu.class, false);
     public MenuData(){
         getMenu();
@@ -55,8 +56,12 @@ public class MenuData extends VerticalLayout {
         dialog.setDraggable(true);
 
         ///delete Dialog
-//        Dialog delete = new Dialog();
-//        dialog.getElement().setAttribute();
+        Dialog delete = new Dialog();
+        delete.getElement().setAttribute("aria-label", "Add note");
+        VerticalLayout deleteLayout = deleteDialog(delete);
+        delete.add(deleteLayout);
+        delete.setModal(false);
+        delete.setDraggable(true);
 
         Button addMenu = new Button("เพิ่มเมนู",new Icon(VaadinIcon.PLUS), e -> dialog.open());
         addMenu.setWidth("100%");
@@ -70,7 +75,9 @@ public class MenuData extends VerticalLayout {
             editButton.getStyle().set("color","#f0ad4e");
             deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
             deleteButton.addClickListener(e->{
-                deleteMenu(menu.get_id());
+                deleteName = menu.getName();
+                deleteId = menu.get_id();
+                delete.open();
             });
 //            editButton.addClickListener(e->{
 //
@@ -80,7 +87,9 @@ public class MenuData extends VerticalLayout {
             return group;
         }).setWidth("15%").setFlexGrow(0).setHeader(addMenu);
         grid.addColumn(Menu::getName).setHeader("ชื่อเมนู").setFlexGrow(0);
-        grid.addColumn(Menu::getPrice).setHeader("ราคา(บาท)").setFlexGrow(0);
+        grid.addColumn(Menu::getMats_cost).setHeader("ราคาต้นทุน").setFlexGrow(0);
+        grid.addColumn(Menu::getMats_left).setHeader("วัตถุดิบคงเหลือ").setFlexGrow(0).setWidth("10%");
+        grid.addColumn(Menu::getPrice).setHeader("ราคาขาย").setFlexGrow(0);
         grid.addColumn(Menu::getDetail).setHeader("คำอธิบาย");
         grid.setItems(menu.model);
         add(title,grid);
@@ -117,9 +126,18 @@ public class MenuData extends VerticalLayout {
         fieldLayout.setSpacing(false);
         fieldLayout.setPadding(false);
         fieldLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        Button cancelButton = new Button("ยกเลิก", e -> dialog.close());
+        Button cancelButton = new Button("ยกเลิก");
         Button saveButton = new Button("เพิ่มเมนู");
 
+        cancelButton.addClickListener(e->{
+            titleField.setValue("");
+            countField.setValue("");
+            costField.setValue("");
+            imgUrl.setValue("");
+            priceField.setValue("");
+            detailArea.setValue("");
+            dialog.close();
+        });
         saveButton.addClickListener(e->{
             String name,mats_left,mats_cost,image,price,detail;
             name = titleField.getValue();
@@ -144,6 +162,8 @@ public class MenuData extends VerticalLayout {
                         .retrieve()
                         .bodyToMono(Boolean.class)
                         .block();
+                grid.setItems(menu.model);
+                getMenu();
             }
             catch (Exception ex){
                 nullFound = true;
@@ -161,8 +181,67 @@ public class MenuData extends VerticalLayout {
                 noti.open();
                 getMenu();
                 grid.setItems(menu.model);
+                getMenu();
                 dialog.close();
+                titleField.setValue("");
+                countField.setValue("");
+                costField.setValue("");
+                imgUrl.setValue("");
+                priceField.setValue("");
+                detailArea.setValue("");
             }
+        })
+        ;
+
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        HorizontalLayout buttonLayout = new HorizontalLayout(cancelButton,
+                saveButton);
+        buttonLayout
+                .setJustifyContentMode(FlexComponent.JustifyContentMode.END);
+
+        VerticalLayout dialogLayout = new VerticalLayout(header, fieldLayout,
+                buttonLayout);
+        dialogLayout.setPadding(false);
+        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        dialogLayout.getStyle().set("width", "300px").set("max-width", "100%");
+        return dialogLayout;
+    }
+
+    private VerticalLayout deleteDialog(Dialog dialog) {
+        H2 headline = new H2("ลบเมนู ");
+        Text text = new Text("หากกดตกลงจะไม่สามารถย้อนกลับได้ คุณแน่ใจนะ?");
+        headline.getStyle().set("margin", "0").set("font-size", "1.5em")
+                .set("font-weight", "bold");
+        HorizontalLayout header = new HorizontalLayout(headline);
+        header.getElement().getClassList().add("draggable");
+        header.setSpacing(false);
+        header.getStyle()
+                .set("border-bottom", "1px solid var(--lumo-contrast-20pct)")
+                .set("cursor", "move");
+        header.getStyle()
+                .set("padding", "var(--lumo-space-m) var(--lumo-space-l)")
+                .set("margin",
+                        "calc(var(--lumo-space-s) * -1) calc(var(--lumo-space-l) * -1) 0");
+        VerticalLayout fieldLayout = new VerticalLayout(
+                text
+        );
+        fieldLayout.setSpacing(false);
+        fieldLayout.setPadding(false);
+        fieldLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        Button cancelButton = new Button("ยกเลิก");
+        Button saveButton = new Button("ตกลง");
+
+        cancelButton.addClickListener(e->{
+            deleteId = "";
+            deleteName = "";
+            dialog.close();
+        });
+        saveButton.addClickListener(e->{
+            deleteMenu(deleteId);
+            dialog.close();
+            deleteId = "";
+            deleteName = "";
         })
         ;
 
@@ -207,6 +286,7 @@ public class MenuData extends VerticalLayout {
         System.out.println(out);
         getMenu();
         grid.setItems(menu.model);
+        getMenu();
     }
 
 }
